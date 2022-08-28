@@ -17,11 +17,12 @@ BEGIN
     -- process (a,b,c) --Inicia el proceso
     -- begin
 
-    S1 <= a XOR b XOR c; --xor
-    S2 <= a OR b OR c; --or
-    S3 <= a XNOR b; --xnor
-    S4 <= b NOR c; --asignar otras funciones
-    S5 <= a NAND c; -- NOR B
-    S6 <= a AND b; --
+    S1 <= a XOR b XOR c;-- xor
+    S2 <= a OR b OR c;  -- or
+    S3 <= a XNOR b;     -- xnor
+    S4 <= b NOR c;      -- nor
+    S5 <= (a NAND c) xor b; -- (a nand c) xor b
+    S6 <= (a AND b) or c;   -- (a and  b) or c  
+
     -- end process; --Fin del proceso
 END a_func; --Fin de la Arquitectura
