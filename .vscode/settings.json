@@ -1,0 +1,4 @@
+{
+    "vhdl.enableStutterDelimiters": true,
+    "vhdl.enableStutterComments": true
+}
