@@ -1,0 +1,17 @@
+#NET"CLK" LOC=E7;
+
+NET"a" LOC=M1;
+NET"b" LOC=P2;
+NET"c" LOC=N5;
+
+
+NET"s1" LOC=N1;
+NET"s2" LOC=R2;
+NET"s3" LOC=R5;
+NET"s4" LOC=T8;
+NET"s5" LOC=M11;
+NET"s6" LOC=P5;
+
+
+
+
