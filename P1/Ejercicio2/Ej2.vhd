@@ -4,19 +4,21 @@ LIBRARY ieee;
 USE ieee.std_logic_1164.ALL;
 ENTITY ff_d IS PORT (
     clk : IN STD_LOGIC;
-    d   : IN STD_LOGIC_VECTOR (7 DOWNTO 0);
-    q, q_bar : OUT STD_LOGIC_VECTOR (7 DOWNTO 0)
-    );
+    d1   : IN STD_LOGIC;
+    q: out std_logic_vector(7 downto 0)    );
 END ff_d;
 
 ARCHITECTURE f_d OF ff_d IS
+--signal qq1,qq2,qq3,qq4,qq5,qq6,qq7,qq8 : std_logic; 
+signal aux: std_logic_vector(7 downto 0):="00000000";
 BEGIN
+q<=aux;
     --siempre que exista un flanco positivo en clk, se asigna d a q
     PROCESS (clk)
     BEGIN
         IF rising_edge(clk) THEN
-            q <= d;
-            q_bar <= NOT d;
+            aux <= d1 & aux(7 downto 1);
+            --q_bar <= NOT d;
         END IF;
     END PROCESS; --fin del proceso
 END f_d; --fin de la arquitectura
