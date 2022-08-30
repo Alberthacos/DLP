@@ -10,7 +10,7 @@ USE ieee.std_logic_unsigned.ALL;
 ENTITY DISPLAYS IS
     PORT (
 
-        signo, cantidad : IN STD_LOGIC_VECTOR (3 DOWNTO 0); -- digitos unidades, decenas,
+        cantidad : IN STD_LOGIC_VECTOR (3 DOWNTO 0); -- digitos unidades, decenas,
         SAL_400Hz : IN STD_LOGIC; -- reloj de 400Hz
         CLK : IN STD_LOGIC;
         DISPLAY : OUT STD_LOGIC_VECTOR(7 DOWNTO 0); -- seg dsply "abcdefgP"
@@ -37,15 +37,10 @@ BEGIN
             SEL <= SEL + '1';
 
             CASE(SEL) IS
-                WHEN "00" => AN <= "1110";
-                D <= UNI; -- UNIDADES
-                WHEN "01" => AN <= "1101";
-                D <= DEC; -- DECENAS
-                WHEN "11" => AN <= "1011";
-                D <= SIGNO; -- signo
-
-                WHEN OTHERS => AN <= "1111";
-                D <= SIGNO; -- signo
+                WHEN "00" => AN <= "1110"; D <= UNI; -- UNIDADES
+                WHEN "01" => AN <= "1101"; D <= DEC; -- DECENAS
+                --WHEN "11" => AN <= "1111"; D <= x"0"; -- signo
+                WHEN OTHERS => AN <= "1111"; D <= x"0"; -- signo
             END CASE;
         END IF;
     END PROCESS;
