@@ -1,5 +1,7 @@
 NET clk   LOC=E7;
 
+#NET d1 LOC = L1;
+
 NET d(7) LOC=M1;
 NET d(6) LOC=P2;
 NET d(5) LOC=N5;

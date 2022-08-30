@@ -1,3 +1,4 @@
+
 *.html
 *.bgn
 *.bld
@@ -99,11 +100,9 @@ webtalk.log
 webtalk_pn.xml
 
 # generated folders
-iseconfig/
 xlnx_auto_0_xdb/
 xst/
 _ngo/
 _xmsgs/
-*.xise
 _vscode/
 .vscode/
