@@ -20,11 +20,13 @@ BEGIN -- begin architecture ------------------------------------
     PROCESS (clk)
     BEGIN
         IF clk'event AND clk = '1' THEN
+
             tone <= tone + '1';
+
         END IF;
     END PROCESS;
     -- rampa y divisor --
-    PROCESS (tone,ramp)
+    PROCESS (tone)
     BEGIN
         IF tone(22) = '1' THEN
             ramp <= tone(21 DOWNTO 15);
@@ -50,6 +52,7 @@ BEGIN -- begin architecture ------------------------------------
         IF clk'event AND clk = '1' THEN
             IF (counter = x"00000" & "00") THEN
                 spkr <= NOT spkr;
+
             END IF;
         END IF;
         speaker <= spkr;

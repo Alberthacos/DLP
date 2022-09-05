@@ -15,12 +15,24 @@
   <version xil_pn:ise_version="14.7" xil_pn:schema_version="2"/>
 
   <files>
-    <file xil_pn:name="ambulancia.v" xil_pn:type="FILE_VERILOG">
-      <association xil_pn:name="BehavioralSimulation" xil_pn:seqID="139"/>
+    <file xil_pn:name="Contador_binario.vhd" xil_pn:type="FILE_VHDL">
+      <association xil_pn:name="BehavioralSimulation" xil_pn:seqID="1"/>
+      <association xil_pn:name="Implementation" xil_pn:seqID="3"/>
+    </file>
+    <file xil_pn:name="TopContador.vhd" xil_pn:type="FILE_VHDL">
+      <association xil_pn:name="BehavioralSimulation" xil_pn:seqID="2"/>
+      <association xil_pn:name="Implementation" xil_pn:seqID="4"/>
+    </file>
+    <file xil_pn:name="disp.vhd" xil_pn:type="FILE_VHDL">
+      <association xil_pn:name="BehavioralSimulation" xil_pn:seqID="19"/>
       <association xil_pn:name="Implementation" xil_pn:seqID="1"/>
     </file>
-    <file xil_pn:name="RESTRICCIONS.ucf" xil_pn:type="FILE_UCF">
+    <file xil_pn:name="restricciones .ucf" xil_pn:type="FILE_UCF">
       <association xil_pn:name="Implementation" xil_pn:seqID="0"/>
+    </file>
+    <file xil_pn:name="controlador_display.vhd" xil_pn:type="FILE_VHDL">
+      <association xil_pn:name="BehavioralSimulation" xil_pn:seqID="57"/>
+      <association xil_pn:name="Implementation" xil_pn:seqID="2"/>
     </file>
   </files>
 
@@ -138,9 +150,9 @@
     <property xil_pn:name="ISim UUT Instance Name" xil_pn:value="UUT" xil_pn:valueState="default"/>
     <property xil_pn:name="Ignore User Timing Constraints Map" xil_pn:value="false" xil_pn:valueState="default"/>
     <property xil_pn:name="Ignore User Timing Constraints Par" xil_pn:value="false" xil_pn:valueState="default"/>
-    <property xil_pn:name="Implementation Top" xil_pn:value="Module|music" xil_pn:valueState="non-default"/>
-    <property xil_pn:name="Implementation Top File" xil_pn:value="ambulancia.v" xil_pn:valueState="non-default"/>
-    <property xil_pn:name="Implementation Top Instance Path" xil_pn:value="/music" xil_pn:valueState="non-default"/>
+    <property xil_pn:name="Implementation Top" xil_pn:value="Architecture|TopContador|Behavioral" xil_pn:valueState="non-default"/>
+    <property xil_pn:name="Implementation Top File" xil_pn:value="TopContador.vhd" xil_pn:valueState="non-default"/>
+    <property xil_pn:name="Implementation Top Instance Path" xil_pn:value="/TopContador" xil_pn:valueState="non-default"/>
     <property xil_pn:name="Include 'uselib Directive in Verilog File" xil_pn:value="false" xil_pn:valueState="default"/>
     <property xil_pn:name="Include SIMPRIM Models in Verilog File" xil_pn:value="false" xil_pn:valueState="default"/>
     <property xil_pn:name="Include UNISIM Models in Verilog File" xil_pn:value="false" xil_pn:valueState="default"/>
@@ -203,7 +215,7 @@
     <property xil_pn:name="Other XPWR Command Line Options" xil_pn:value="" xil_pn:valueState="default"/>
     <property xil_pn:name="Other XST Command Line Options" xil_pn:value="" xil_pn:valueState="default"/>
     <property xil_pn:name="Output Extended Identifiers" xil_pn:value="false" xil_pn:valueState="default"/>
-    <property xil_pn:name="Output File Name" xil_pn:value="music" xil_pn:valueState="default"/>
+    <property xil_pn:name="Output File Name" xil_pn:value="TopContador" xil_pn:valueState="default"/>
     <property xil_pn:name="Overwrite Compiled Libraries" xil_pn:value="false" xil_pn:valueState="default"/>
     <property xil_pn:name="Pack I/O Registers into IOBs" xil_pn:value="Auto" xil_pn:valueState="default"/>
     <property xil_pn:name="Pack I/O Registers/Latches into IOBs" xil_pn:value="Off" xil_pn:valueState="default"/>
@@ -217,10 +229,10 @@
     <property xil_pn:name="Placer Effort Level Map" xil_pn:value="High" xil_pn:valueState="default"/>
     <property xil_pn:name="Placer Extra Effort Map" xil_pn:value="None" xil_pn:valueState="default"/>
     <property xil_pn:name="Port to be used" xil_pn:value="Auto - default" xil_pn:valueState="default"/>
-    <property xil_pn:name="Post Map Simulation Model Name" xil_pn:value="music_map.vhd" xil_pn:valueState="default"/>
-    <property xil_pn:name="Post Place &amp; Route Simulation Model Name" xil_pn:value="music_timesim.vhd" xil_pn:valueState="default"/>
-    <property xil_pn:name="Post Synthesis Simulation Model Name" xil_pn:value="music_synthesis.vhd" xil_pn:valueState="default"/>
-    <property xil_pn:name="Post Translate Simulation Model Name" xil_pn:value="music_translate.vhd" xil_pn:valueState="default"/>
+    <property xil_pn:name="Post Map Simulation Model Name" xil_pn:value="TopContador_map.vhd" xil_pn:valueState="default"/>
+    <property xil_pn:name="Post Place &amp; Route Simulation Model Name" xil_pn:value="TopContador_timesim.vhd" xil_pn:valueState="default"/>
+    <property xil_pn:name="Post Synthesis Simulation Model Name" xil_pn:value="TopContador_synthesis.vhd" xil_pn:valueState="default"/>
+    <property xil_pn:name="Post Translate Simulation Model Name" xil_pn:value="TopContador_translate.vhd" xil_pn:valueState="default"/>
     <property xil_pn:name="Power Reduction Map spartan6" xil_pn:value="Off" xil_pn:valueState="default"/>
     <property xil_pn:name="Power Reduction Par" xil_pn:value="false" xil_pn:valueState="default"/>
     <property xil_pn:name="Power Reduction Xst" xil_pn:value="false" xil_pn:valueState="default"/>
@@ -242,7 +254,7 @@
     <property xil_pn:name="Release Write Enable (Output Events)" xil_pn:value="Default (6)" xil_pn:valueState="default"/>
     <property xil_pn:name="Rename Design Instance in Testbench File to" xil_pn:value="UUT" xil_pn:valueState="default"/>
     <property xil_pn:name="Rename Top Level Architecture To" xil_pn:value="Structure" xil_pn:valueState="default"/>
-    <property xil_pn:name="Rename Top Level Entity to" xil_pn:value="music" xil_pn:valueState="default"/>
+    <property xil_pn:name="Rename Top Level Entity to" xil_pn:value="TopContador" xil_pn:valueState="default"/>
     <property xil_pn:name="Rename Top Level Module To" xil_pn:value="" xil_pn:valueState="default"/>
     <property xil_pn:name="Report Fastest Path(s) in Each Constraint" xil_pn:value="true" xil_pn:valueState="default"/>
     <property xil_pn:name="Report Fastest Path(s) in Each Constraint Post Trace" xil_pn:value="true" xil_pn:valueState="default"/>
@@ -334,7 +346,7 @@
     <!-- The following properties are for internal use only. These should not be modified.-->
     <!--                                                                                  -->
     <property xil_pn:name="PROP_BehavioralSimTop" xil_pn:value="" xil_pn:valueState="default"/>
-    <property xil_pn:name="PROP_DesignName" xil_pn:value="Ej4" xil_pn:valueState="non-default"/>
+    <property xil_pn:name="PROP_DesignName" xil_pn:value="ej3" xil_pn:valueState="non-default"/>
     <property xil_pn:name="PROP_DevFamilyPMName" xil_pn:value="spartan6" xil_pn:valueState="default"/>
     <property xil_pn:name="PROP_FPGAConfiguration" xil_pn:value="FPGAConfiguration" xil_pn:valueState="default"/>
     <property xil_pn:name="PROP_PostMapSimTop" xil_pn:value="" xil_pn:valueState="default"/>
@@ -342,8 +354,8 @@
     <property xil_pn:name="PROP_PostSynthSimTop" xil_pn:value="" xil_pn:valueState="default"/>
     <property xil_pn:name="PROP_PostXlateSimTop" xil_pn:value="" xil_pn:valueState="default"/>
     <property xil_pn:name="PROP_PreSynthesis" xil_pn:value="PreSynthesis" xil_pn:valueState="default"/>
-    <property xil_pn:name="PROP_intProjectCreationTimestamp" xil_pn:value="2022-08-30T00:17:47" xil_pn:valueState="non-default"/>
-    <property xil_pn:name="PROP_intWbtProjectID" xil_pn:value="3506F614B82B447B8A855F54F1807327" xil_pn:valueState="non-default"/>
+    <property xil_pn:name="PROP_intProjectCreationTimestamp" xil_pn:value="2022-08-28T16:30:32" xil_pn:valueState="non-default"/>
+    <property xil_pn:name="PROP_intWbtProjectID" xil_pn:value="919DA1AB08064D4186566C9FCD70FAB5" xil_pn:valueState="non-default"/>
     <property xil_pn:name="PROP_intWorkingDirLocWRTProjDir" xil_pn:value="Same" xil_pn:valueState="non-default"/>
     <property xil_pn:name="PROP_intWorkingDirUsed" xil_pn:value="No" xil_pn:valueState="non-default"/>
   </properties>

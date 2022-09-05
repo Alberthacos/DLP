@@ -1,0 +1,39 @@
+##Asignacion de terminales para amiba 2
+
+//RESET--PUSH BUTTON
+NET "RST" LOC = "L1"; // btn3 RST
+
+//CLK reloj 50MHz
+NET "CLK" LOC = "E7";
+
+NET "DATA<7>" LOC = "N1"; // LD0
+NET "DATA<6>" LOC = "R2"; // LD1
+NET "DATA<5>" LOC = "R5"; // LD2
+NET "DATA<4>" LOC = "N8"; // LD3
+NET "DATA<3>" LOC = "P11"; // LD4
+NET "DATA<2>" LOC = "P6"; // LD5
+NET "DATA<1>" LOC = "P8"; // LD6
+NET "DATA<0>" LOC = "P12"; // LD7
+
+// Pmod ALS en JA
+NET "CS" LOC = "B15"; // 
+#NET "NC" LOC = "K12"; // 
+NET "SDO" LOC = "A13"; // 
+NET "SCK" LOC = "A11"; // 
+
+//DISPLAYS
+NET "DISPLAY(7)" LOC = "P16"; // a
+NET "DISPLAY(6)" LOC = "P15"; // b
+NET "DISPLAY(5)" LOC = "T15"; // c
+NET "DISPLAY(4)" LOC = "T14"; // d
+NET "DISPLAY(3)" LOC = "T13"; // e
+NET "DISPLAY(2)" LOC = "R16"; // f
+NET "DISPLAY(1)" LOC = "R15"; // g
+NET "DISPLAY(0)" LOC = "R14"; // P
+
+//ANODOS
+NET "AN(3)" LOC = "E11"; // AN0
+NET "AN(2)" LOC = "D11"; // AN1
+NET "AN(1)" LOC = "C15"; // AN2
+NET "AN(0)" LOC = "E15"; // AN3
+
