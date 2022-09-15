@@ -26,3 +26,17 @@ NET pwm LOC = B15;
 #NET "sensor" CLOCK_DEDICATED_ROUTE=false;
 #NET data LOC = L1;
 #NET op_data LOC = N1;
+
+#NET  LED(1) LOC = R2;
+#NET  LED(0) LOC = R5;
+
+NET  buttonadd  LOC = J3;
+NET "buttonadd" CLOCK_DEDICATED_ROUTE=false;
+NET  Buttondown  LOC = M2;
+NET "buttondown" CLOCK_DEDICATED_ROUTE=false;
+
+NET conte(4) LOC =N8;
+NET conte(3) LOC =P11;
+NET conte(2) LOC =P6;
+NET conte(1) LOC =P8;
+NET conte(0) LOC =P12;
