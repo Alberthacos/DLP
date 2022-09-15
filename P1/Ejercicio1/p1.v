@@ -14,6 +14,6 @@ assign s1 = a ^ b ^ c; //
 assign s2 = a | b | c; // 
 assign s3 = ~( a ^ b ); //  
 assign s4 = ~(b | c);
-assign s5 = (~(a ^ c)) | b;
-assign s6 = (a ^ b) | c; 
+assign s5 = (~(a & c)) | b;
+assign s6 = (a & b) | c; 
 endmodule

@@ -1,0 +1,50 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<wave_config>
+   <wave_state>
+   </wave_state>
+   <db_ref_list>
+      <db_ref path="C:/Users/amf01/Documents/DLP/P1/Ejercicio1/funciones_isim_beh.wdb" id="1" type="auto">
+         <top_modules>
+            <top_module name="funciones" />
+            <top_module name="std_logic_1164" />
+         </top_modules>
+      </db_ref>
+   </db_ref_list>
+   <WVObjectSize size="9" />
+   <wvobject fp_name="/funciones/a" type="logic" db_ref_id="1">
+      <obj_property name="ElementShortName">a</obj_property>
+      <obj_property name="ObjectShortName">a</obj_property>
+   </wvobject>
+   <wvobject fp_name="/funciones/b" type="logic" db_ref_id="1">
+      <obj_property name="ElementShortName">b</obj_property>
+      <obj_property name="ObjectShortName">b</obj_property>
+   </wvobject>
+   <wvobject fp_name="/funciones/c" type="logic" db_ref_id="1">
+      <obj_property name="ElementShortName">c</obj_property>
+      <obj_property name="ObjectShortName">c</obj_property>
+   </wvobject>
+   <wvobject fp_name="/funciones/s1" type="logic" db_ref_id="1">
+      <obj_property name="ElementShortName">s1</obj_property>
+      <obj_property name="ObjectShortName">s1</obj_property>
+   </wvobject>
+   <wvobject fp_name="/funciones/s2" type="logic" db_ref_id="1">
+      <obj_property name="ElementShortName">s2</obj_property>
+      <obj_property name="ObjectShortName">s2</obj_property>
+   </wvobject>
+   <wvobject fp_name="/funciones/s3" type="logic" db_ref_id="1">
+      <obj_property name="ElementShortName">s3</obj_property>
+      <obj_property name="ObjectShortName">s3</obj_property>
+   </wvobject>
+   <wvobject fp_name="/funciones/s4" type="logic" db_ref_id="1">
+      <obj_property name="ElementShortName">s4</obj_property>
+      <obj_property name="ObjectShortName">s4</obj_property>
+   </wvobject>
+   <wvobject fp_name="/funciones/s5" type="logic" db_ref_id="1">
+      <obj_property name="ElementShortName">s5</obj_property>
+      <obj_property name="ObjectShortName">s5</obj_property>
+   </wvobject>
+   <wvobject fp_name="/funciones/s6" type="logic" db_ref_id="1">
+      <obj_property name="ElementShortName">s6</obj_property>
+      <obj_property name="ObjectShortName">s6</obj_property>
+   </wvobject>
+</wave_config>

@@ -1,0 +1,16 @@
+Running: fuse.exe -relaunch -intstyle "ise" -incremental -lib "secureip" -o "C:/Users/amf01/Documents/DLP/P1/Ejercicio2/ff_D_isim_beh.exe" -prj "C:/Users/amf01/Documents/DLP/P1/Ejercicio2/ff_D_beh.prj" "work.ff_D" 
+ISim P.20131013 (signature 0x7708f090)
+Number of CPUs detected in this system: 4
+Turning on mult-threading, number of parallel sub-compilation jobs: 8 
+Determining compilation order of HDL files
+Parsing VHDL file "C:/Users/amf01/Documents/DLP/P1/Ejercicio2/Ej2.vhd" into library work
+Starting static elaboration
+Completed static elaboration
+Compiling package standard
+Compiling package std_logic_1164
+Compiling architecture eightff_d of entity ff_d
+Time Resolution for simulation is 1ps.
+Compiled 3 VHDL Units
+Built simulation executable C:/Users/amf01/Documents/DLP/P1/Ejercicio2/ff_D_isim_beh.exe
+Fuse Memory Usage: 29644 KB
+Fuse CPU Usage: 499 ms

@@ -1,0 +1,5 @@
+NET Foco LOC = N1;
+NET Buzzer LOC = R2;
+NET Vibrador LOC = R5;
+
+NET Sensor LOC = L1;

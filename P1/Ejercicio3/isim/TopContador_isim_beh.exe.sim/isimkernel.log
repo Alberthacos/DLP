@@ -1,0 +1,32 @@
+Command line:
+   TopContador_isim_beh.exe
+     -simmode  gui
+     -simrunnum  0
+     -socket  51350
+
+Sat Sep 10 20:22:52 2022
+
+
+ Elaboration Time: 0.296875 sec
+
+ Current Memory Usage: 5806.04 Meg
+
+ Total Signals          : 30
+ Total Nets             : 46
+ Total Signal Drivers   : 13
+ Total Blocks           : 7
+ Total Primitive Blocks : 6
+ Total Processes        : 5
+ Total Traceable Variables  : 10
+ Total Scalar Nets and Variables : 424
+Total Line Count : 43
+Total Line Count : 43
+Total Line Count : 43
+Total Line Count : 43
+
+ Total Simulation Time: 109.828 sec
+
+ Current Memory Usage: 4705.03 Meg
+
+Sat Sep 10 20:31:31 2022
+

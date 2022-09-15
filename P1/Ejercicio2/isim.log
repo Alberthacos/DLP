@@ -1,0 +1,166 @@
+ISim log file
+Running: C:\Users\amf01\Documents\DLP\P1\Ejercicio2\ff_D_isim_beh.exe -intstyle ise -gui -tclbatch isim.cmd -wdb C:/Users/amf01/Documents/DLP/P1/Ejercicio2/ff_D_isim_beh.wdb 
+ISim P.20131013 (signature 0x7708f090)
+WARNING: A WEBPACK license was found.
+WARNING: Please use Xilinx License Configuration Manager to check out a full ISim license.
+WARNING: ISim will run in Lite mode. Please refer to the ISim documentation for more information on the differences between the Lite and the Full version.
+This is a Lite version of ISim.
+Time resolution is 1 ps
+# onerror resume
+# wave add /
+# run 1000 ns
+Simulator is doing circuit initialization process.
+Finished circuit initialization process.
+# isim force add /ff_d/clk 1 -radix bin -value 0 -radix bin -time 10 us -repeat 20 us
+# isim force add /ff_d/clk 1 -radix bin -value 0 -radix bin -time 10 us -repeat 20 us
+# isim force add /ff_d/d 01011001 -radix bin
+# isim force add /ff_d/d 01011001 -radix bin
+# isim force add /ff_d/reset 0 -radix bin
+# isim force add /ff_d/reset 0 -radix bin
+# restart
+# isim force add /ff_d/d 01001101 -radix bin
+# isim force add /ff_d/d 01001101 -radix bin
+# isim force add /ff_d/clk 1 -radix bin -value 0 -radix bin -time 10 us -repeat 20 us
+# isim force add /ff_d/clk 1 -radix bin -value 0 -radix bin -time 10 us -repeat 20 us
+# isim force add /ff_d/reset 0 -radix bin
+# isim force add /ff_d/reset 0 -radix bin
+# run 1.00us
+Simulator is doing circuit initialization process.
+Finished circuit initialization process.
+# run 30.00us
+# run 60.00us
+# restart
+# isim force add /ff_d/clk 1 -radix bin -value 1 -radix bin -time 10 us -repeat 20 us
+# isim force add /ff_d/clk 1 -radix bin -value 1 -radix bin -time 10 us -repeat 20 us
+# isim force add /ff_d/reset 0 -radix bin
+# isim force add /ff_d/reset 0 -radix bin
+# isim force add /ff_d/d 01100010 -radix bin
+# isim force add /ff_d/d 01100010 -radix bin
+# run 20.00us
+Simulator is doing circuit initialization process.
+Finished circuit initialization process.
+# isim force add /ff_d/d 10101010 -radix bin
+# isim force add /ff_d/d 10101010 -radix bin
+# run 20.00us
+# isim force add /ff_d/clk 1 -radix bin -value 0 -radix bin -time 10 us -repeat 20 us
+# isim force add /ff_d/clk 1 -radix bin -value 0 -radix bin -time 10 us -repeat 20 us
+# run 20.00us
+# run 20.00us
+# restart
+# isim force add /ff_d/clk 1 -radix bin -value 0 -radix bin -time 10 ns -repeat 20 ns
+# isim force add /ff_d/clk 1 -radix bin -value 0 -radix bin -time 10 ns -repeat 20 ns
+# run all
+Simulator is doing circuit initialization process.
+Finished circuit initialization process.
+Stopped at time : 303143110 ns : File "C:/Users/amf01/Documents/DLP/P1/Ejercicio2/Ej2.vhd" Line 60
+ISim P.20131013 (signature 0x7708f090)
+WARNING: A WEBPACK license was found.
+WARNING: Please use Xilinx License Configuration Manager to check out a full ISim license.
+WARNING: ISim will run in Lite mode. Please refer to the ISim documentation for more information on the differences between the Lite and the Full version.
+This is a Lite version of ISim.
+# run 1000 ns
+Simulator is doing circuit initialization process.
+Finished circuit initialization process.
+# restart
+# isim force add /ff_d/clk 1 -radix bin -value 0 -radix bin -time 10 ns -repeat 20 ns
+# isim force add /ff_d/clk 1 -radix bin -value 0 -radix bin -time 10 ns -repeat 20 ns
+# run 1.00us
+Simulator is doing circuit initialization process.
+Finished circuit initialization process.
+# run 1.00us
+# run 1.00us
+# run 1.00us
+# run 1.00us
+# run 1.00us
+# run 1.00us
+# run 1.00us
+# run 1.00us
+# run 1.00us
+# run 1.00us
+# run 1.00us
+# run 1.00us
+# run 1.00us
+# run 1.00us
+# run 1.00us
+# run 1.00us
+# run 1.00us
+# run 1.00us
+# run 1.00us
+# run 1.00us
+# run 1.00us
+# run 1.00us
+# run 20ns
+# isim force add /ff_d/clk 1 -radix bin -value 0 -radix bin -time 10 ns -repeat 20 ns
+# isim force add /ff_d/clk 1 -radix bin -value 0 -radix bin -time 10 ns -repeat 20 ns
+# run 20ns
+# run 20ns
+# run 20ns
+# run 20ns
+# run 20ns
+# run 20ns
+# run 20ns
+# run 20ns
+# run 20ns
+# run 20ns
+# run 20ns
+# run 20ns
+# run 20ns
+# run 20ns
+# run 20ns
+# run 20ns
+# run 20ns
+# run 20ns
+# restart
+# isim force add /ff_d/clk 1 -radix bin -value 0 -radix bin -time 10 ns -repeat 20 ns
+# isim force add /ff_d/clk 1 -radix bin -value 0 -radix bin -time 10 ns -repeat 20 ns
+# run 20ns
+Simulator is doing circuit initialization process.
+Finished circuit initialization process.
+# run 20ns
+# restart
+# isim force add /ff_d/clk 1 -radix bin -value 0 -radix bin -time 10 ns -repeat 20 ns
+# isim force add /ff_d/clk 1 -radix bin -value 0 -radix bin -time 10 ns -repeat 20 ns
+# isim force add /ff_d/d 01010101 -radix bin
+# isim force add /ff_d/d 01010101 -radix bin
+# isim force add /ff_d/reset 0 -radix bin
+# isim force add /ff_d/reset 0 -radix bin
+# run 20ns
+Simulator is doing circuit initialization process.
+Finished circuit initialization process.
+# run 20ns
+# isim force add /ff_d/d 10101010 -radix bin
+# isim force add /ff_d/d 10101010 -radix bin
+# run 20ns
+# run 20ns
+# isim force add /ff_d/d 11001100 -radix bin
+# isim force add /ff_d/d 11001100 -radix bin
+# run 20ns
+# run 20ns
+# restart
+# isim force add /ff_d/clk 0 -radix bin -value 1 -radix bin -time 10 ns -repeat 20 ns
+# isim force add /ff_d/clk 0 -radix bin -value 1 -radix bin -time 10 ns -repeat 20 ns
+# run 20ns
+Simulator is doing circuit initialization process.
+Finished circuit initialization process.
+# restart
+# isim force add /ff_d/clk 0 -radix bin -value 1 -radix bin -time 10 ns -repeat 20 ns
+# isim force add /ff_d/clk 0 -radix bin -value 1 -radix bin -time 10 ns -repeat 20 ns
+# isim force add /ff_d/reset 0 -radix bin
+# isim force add /ff_d/reset 0 -radix bin
+# isim force add /ff_d/d 00000000 -radix bin
+# isim force add /ff_d/d 00000000 -radix bin
+# run 20ns
+Simulator is doing circuit initialization process.
+Finished circuit initialization process.
+# isim force add /ff_d/d 10101010 -radix bin
+# isim force add /ff_d/d 10101010 -radix bin
+# run 20ns
+# isim force add /ff_d/d 01010101 -radix bin
+# isim force add /ff_d/d 01010101 -radix bin
+# run 20ns
+# isim force add /ff_d/d 11111111 -radix bin
+# isim force add /ff_d/d 11111111 -radix bin
+# run 20ns
+# isim force add /ff_d/reset 1 -radix bin
+# isim force add /ff_d/reset 1 -radix bin
+# run 20ns

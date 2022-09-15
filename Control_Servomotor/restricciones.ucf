@@ -1,0 +1,12 @@
+#Asignación de terminales de la Amiba 2
+NET "clk"  LOC = "E7"  ; # reloj de 50 MHz
+
+NET "PWM"  LOC = "B15"  ; # Salida a PWM 
+
+#NET "selector<1>"  LOC = "M1"  ; # al switch SW1
+#
+#NET "selector<0>"  LOC = "P2"  ; # al switch SW2
+#NET entrada LOC = L1;
+#NET "entrada" CLOCK_DEDICATED_ROUTE = FALSE;
+
+NET enable LOC =M1;

@@ -1,11 +1,11 @@
 <?xml version='1.0' encoding='UTF-8'?>
 <report-views version="2.0" >
  <header>
-  <DateModified>2022-09-04T23:04:43</DateModified>
+  <DateModified>2022-09-06T17:00:32</DateModified>
   <ModuleName>SPI_ctrl_ALS</ModuleName>
   <SummaryTimeStamp>Unknown</SummaryTimeStamp>
   <SavedFilePath>C:/Users/amf01/Documents/DLP/P1/Ejercicio6/Pmod/iseconfig/SPI_ctrl_ALS.xreport</SavedFilePath>
-  <ImplementationReportsDirectory>C:/Users/amf01/Documents/DLP/P1/Ejercicio6/Pmod</ImplementationReportsDirectory>
+  <ImplementationReportsDirectory>C:/Users/amf01/Documents/DLP/P1/Ejercicio6/Pmod\</ImplementationReportsDirectory>
   <DateInitialized>2022-09-04T23:04:43</DateInitialized>
   <EnableMessageFiltering>false</EnableMessageFiltering>
  </header>

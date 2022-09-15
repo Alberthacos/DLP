@@ -1,0 +1,1 @@
+-intstyle "ise" -incremental -lib "secureip" -o "C:/Users/amf01/Documents/DLP/P1/Ejercicio3/TopContador_isim_beh.exe" -prj "C:/Users/amf01/Documents/DLP/P1/Ejercicio3/TopContador_beh.prj" "work.TopContador" 
