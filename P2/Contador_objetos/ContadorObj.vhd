@@ -39,7 +39,7 @@ ARCHITECTURE Behavioral OF Control IS
     SIGNAL SEL : STD_LOGIC_VECTOR (1 DOWNTO 0) := "00"; -- selector de barrido display
     --------------------------------------------------------------------------------
     --Servomotor
-    SIGNAL selector : STD_LOGIC := '0'; --Selector para el estado del servo, 0° o 90°
+    SIGNAL selector : STD_LOGIC := '0'; --selector para el estado del servo, 0° o 90°
     SIGNAL PWM_Count : INTEGER RANGE 1 TO 500000; --500000 // contador para pwm 
     --------------------------------------------------------------------------------
     --Encoder
@@ -90,6 +90,11 @@ BEGIN
                     lim <= lim + 1;
                 ELSIF (ButtonSub = '1' and lim > 1 and lim > contador) THEN
                     lim <= lim - 1;
+                --ELSIF (buttonadd = '1' AND lim = 20) THEN 
+                --    lim <= 1;
+                --ELSIF (ButtonSub = '1' and lim = 1) THEN
+                --    lim <= 20;
+
                 END IF;
             END IF;
         ELSE
@@ -214,7 +219,7 @@ BEGIN
     --------------------------------------------------------------------------------
 
     --------------------------------------------------------------------------------
-    servomotor : PROCESS (clk, pwm_count, Aout, selector, Bout)
+    servomotor : PROCESS (clk, pwm_count,Selector)
         CONSTANT pos1 : INTEGER := 24000; --representa a 1.00ms = 0 // 0.5ms 0 deg
         CONSTANT pos2 : INTEGER := 68500; --representa a 1.25ms = 45 // 1.5 90 deg
         --        CONSTANT Max : NATURAL := 500000;
@@ -228,16 +233,16 @@ BEGIN
 
             WHEN '0' => --con el selector en 0 se posiciona en servo en 0°
                 IF PWM_Count <= pos1 THEN
-                    PWM <= '0';
-                ELSE
                     PWM <= '1';
+                ELSE
+                    PWM <= '0';
                 END IF;
 
             WHEN '1' => -- con el selector en 1 se posiciona en servo en 90°
                 IF PWM_Count <= pos2 THEN
-                    PWM <= '0';
-                ELSE
                     PWM <= '1';
+                ELSE
+                    PWM <= '0';
                 END IF;
 
             WHEN OTHERS => NULL;
