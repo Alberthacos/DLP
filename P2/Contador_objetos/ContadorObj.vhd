@@ -23,14 +23,14 @@ ENTITY Control IS
         Seg_Display : OUT STD_LOGIC_VECTOR(7 DOWNTO 0); --segmentos del display 
         reset : IN STD_LOGIC; --Boton de reset 
         PWM : OUT STD_LOGIC; --salida a servomotor
-        An : OUT STD_LOGIC_VECTOR(3 DOWNTO 0) --anodos del display 
+        An : OUT STD_LOGIC_VECTOR(7 DOWNTO 0) --anodos del display 
     );
 
 END ENTITY Control;
 
 ARCHITECTURE Behavioral OF Control IS
     --signals
-	 CONSTANT lim_deb : INTEGER := 6_999_999;
+    CONSTANT lim_deb : INTEGER := 6_999_999;
     SIGNAL Contador : INTEGER RANGE 0 TO 20 := 0; --Contador para el numero de objetos detectados 
     --CONSTANT limite : INTEGER := 15; --limite numero de obj que pueden pasar hasta que se interrumpa el acceso 
     SIGNAL conta_1250us : INTEGER RANGE 1 TO 10_000_000 := 1; -- pulso1 de 1250us@400Hz (0.25ms)
@@ -46,9 +46,9 @@ ARCHITECTURE Behavioral OF Control IS
     SIGNAL sclk : INTEGER RANGE 0 TO lim_deb := 0;--STD_LOGIC_VECTOR (8 DOWNTO 0); 
     SIGNAL sampledA, sampledB, sampledS : STD_LOGIC;
     SIGNAL Aout, Bout, Sout : STD_LOGIC;
-    
+
     SIGNAL lim : INTEGER RANGE 1 TO 21 := 10;
-    SIGNAL salida, q, clk_or: STD_LOGIC;
+    SIGNAL salida, q, clk_or : STD_LOGIC;
 
 BEGIN
     --------------------------------------------------------------------------------
@@ -75,7 +75,7 @@ BEGIN
     END PROCESS;
     --------------------------------------------------------------------------------
 
-    -------------------------------------------------------
+    --------------------------------------------------------------------------------
     PROCESS (clk, salida)
     BEGIN
         IF (clk'event AND clk = '1') THEN-- si no existe un reset y el cambio de clk=1
@@ -86,14 +86,14 @@ BEGIN
 
         IF RESET = '0' THEN
             IF rising_edge(clk_or) THEN
-                IF (buttonAdd = '1' and lim < 20) THEN
+                IF (buttonAdd = '1' AND lim < 20) THEN
                     lim <= lim + 1;
-                ELSIF (ButtonSub = '1' and lim > 1 and lim > contador) THEN
+                ELSIF (ButtonSub = '1' AND lim > 1 AND lim > contador) THEN
                     lim <= lim - 1;
-                --ELSIF (buttonadd = '1' AND lim = 20) THEN 
-                --    lim <= 1;
-                --ELSIF (ButtonSub = '1' and lim = 1) THEN
-                --    lim <= 20;
+                    --ELSIF (buttonadd = '1' AND lim = 20) THEN 
+                    --    lim <= 1;
+                    --ELSIF (ButtonSub = '1' and lim = 1) THEN
+                    --    lim <= 20;
 
                 END IF;
             END IF;
@@ -126,6 +126,7 @@ BEGIN
         END CASE;
 
     END PROCESS;
+    --------------------------------------------------------------------------------
     --------------------------------------------------------------------------------
     debouncer_botones : PROCESS (clk, ButtonAdd, ButtonSub) BEGIN
 
@@ -173,34 +174,55 @@ BEGIN
     --------------------------------------------------------------------------------
 
     --------------------------------------------------------------------------------
-    ControlDisp : PROCESS (SAL_400Hz, sel) BEGIN
+    ControlDispConta : PROCESS (SAL_400Hz, sel) BEGIN
         IF SAL_400Hz'EVENT AND SAL_400Hz = '1' THEN
             SEL <= SEL + '1';
 
-            IF (contador <= 9) THEN
-                CASE(SEL) IS
-                    WHEN "00" => AN <= "1110"; DispVal <= contador; -- UNIDADES
-                    WHEN "01" => AN <= "1101"; DispVal <= 0; -- DECENAS
-                    WHEN OTHERS => AN <= "1111"; DispVal <= 0; -- signo
-                END CASE;
-            ELSIF (contador = 20) then 
-                CASE(SEL) IS
-                    WHEN "00" => AN <= "1110"; DispVal <= 0; -- UNIDADES
-                    WHEN "01" => AN <= "1101"; DispVal <= 2; -- DECENAS
-                    WHEN OTHERS => AN <= "1111"; DispVal <= 0; -- signo
-                END CASE;
-            ELSE
-                CASE(SEL) IS
-                    WHEN "00" => AN <= "1110"; DispVal <= contador - 10; -- UNIDADES
-                    WHEN "01" => AN <= "1101"; DispVal <= 1; -- DECENAS
-                    WHEN OTHERS => AN <= "1111"; DispVal <= 0; -- signo
-                END CASE;
-            END IF;
+            -- IF (contador <= 9) THEN
+            CASE(SEL) IS
+                WHEN "00" => AN <= "10111111"; -- UNIDADES DEL CONTADOR
+                IF contador <= 9 THEN
+                    DispVal <= contador; --Unidades cuando es menor a 10
+                ELSIF contador = 20 THEN
+                    DispVal <= 0; --Unidades son 0 cuando es 20
+                ELSE
+                    DispVal <= contador - 10; --Unidades cuando es mayor a 10, se resta una decena 
+                END IF;
+
+                WHEN "01" => AN <= "01111111"; --DECENAS DEL CONTADOR
+                IF contador <= 9 THEN
+                    DispVal <= 0; --Decenas cuando es menor a 10
+                ELSIF contador = 20 THEN
+                    DispVal <= 2; --Decenas son 2 cuando es 20
+                ELSE
+                    DispVal <= 1; --Decenas cuando es mayor a 9 
+                END IF;
+
+                WHEN "10" => AN <= "11111110"; --UNIDADES DEL LIMITE 
+                IF lim <= 9 THEN
+                    DispVal <= lim; --Unidades cuando es menor a 10
+                ELSIF lim = 20 THEN
+                    DispVal <= 0; --Unidades son 0 cuando es 20
+                ELSE
+                    DispVal <= lim - 10; --Unidades cuando es mayor a 10, se resta una decena 
+                END IF;
+
+                WHEN "11" => AN <= "11111101"; --DECENAS DEL CONTADOR
+                IF lim <= 9 THEN
+                    DispVal <= 0; --Decenas cuando es menor a 10
+                ELSIF lim = 20 THEN
+                    DispVal <= 2; --Decenas son 2 cuando es 20
+                ELSE
+                    DispVal <= 1; --Decenas cuando es mayor a 9 
+                END IF;
+
+
+                WHEN OTHERS => AN <= "11111111";
+                DispVal <= 0; -- signo
+            END CASE;
+
         END IF;
-    END PROCESS;
-    --------------------------------------------------------------------------------
-    --------------------------------------------------------------------------------
-    SegmentosAsignacion : PROCESS (DispVal) BEGIN
+
         CASE(DispVal) IS -- abcdefgP
             WHEN 0 => Seg_Display <= "00000011"; --0
             WHEN 1 => Seg_Display <= "10011111"; --1
@@ -217,9 +239,7 @@ BEGIN
     END PROCESS;
     --------------------------------------------------------------------------------
     --------------------------------------------------------------------------------
-
-    --------------------------------------------------------------------------------
-    servomotor : PROCESS (clk, pwm_count,Selector)
+    servomotor : PROCESS (clk, pwm_count, Selector)
         CONSTANT pos1 : INTEGER := 24000; --representa a 1.00ms = 0 // 0.5ms 0 deg
         CONSTANT pos2 : INTEGER := 68500; --representa a 1.25ms = 45 // 1.5 90 deg
         --        CONSTANT Max : NATURAL := 500000;
@@ -252,3 +272,4 @@ BEGIN
     END PROCESS;
     --------------------------------------------------------------------------------
 END Behavioral;
+
