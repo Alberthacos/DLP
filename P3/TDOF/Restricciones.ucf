@@ -1,0 +1,71 @@
+#NET CLK LOC=E7;
+#NET JSTK(3) LOC=J1;
+#NET JSTK(2) LOC=L1;
+#NET RESET LOC=J3;
+NET SERVOMOTOR1 LOC=B15;
+NET SERVOMOTOR2 LOC=A13;
+
+#
+#NET display(3) LOC=P12;
+#NET display(2) LOC=P8;
+#NET display(1) LOC=P6;
+#NET display(0) LOC=P11;
+  
+#NET "Seg_Display(4)" LOC = "T14"; # d
+#NET "Seg_Display(3)" LOC = "T13"; # e
+#NET "Seg_Display(2)" LOC = "R16"; # f
+#NET "Seg_Display(1)" LOC = "R15"; # g
+#NET "Seg_Display(0)" LOC = "R14"; # P
+#
+###Anodos del display
+#Anodos del limite (Disp inferior)
+#NET AN(3) LOC = D16; # AN4
+#NET AN(2) LOC = E16; # AN5
+#NET AN(1) LOC = F16; # AN6
+#NET AN(0) LOC = G16; # AN7
+##Anodos del contador (Disp superior) 
+#NET AN(7) LOC = E11; # AN1
+#NET AN(6) LOC = D11; # AN1
+#NET AN(5) LOC = C15; # AN2
+#NET AN(4) LOC = E15; # AN3
+#RESET--PUSH BUTTON
+NET RESET LOC = "J1"; # btn3 RST
+NET "reset" CLOCK_DEDICATED_ROUTE = FALSE;
+#NET Sensor LOC = "A13"; # btn3 RS--//b/b/b/bbb/bbbbbbbbb/bb//bbb 
+#NET Motor_interrupcion LOC = "D3"; 
+NET CLK LOC = E7;
+#NET pwm LOC = B15;
+#NET "sensor" CLOCK_DEDICATED_ROUTE=false;
+#NET data LOC = L1;
+#NET op_data LOC = N1;
+
+#NET  LED(1) LOC = R2;
+#NET  LED(0) LOC = R5;
+#NET XLin LOC = H3;
+#NET XRin LOC = J3;
+#NET YUin LOC = L1;
+#NET YDin LOC = M2;
+
+NET XLin LOC = A11;
+NET XRin LOC = C10;
+NET YUin LOC = A8;
+NET YDin LOC = B6;
+
+
+#NET "buttonadd" CLOCK_DEDICATED_ROUTE=false;            UUUUU -----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+
+#NET "buttondown" CLOCK_DEDICATED_ROUTE=false;
+
+NET LedLim1(5) LOC =R5;
+NET LedLim1(4) LOC =N8;
+NET LedLim1(3) LOC =P11;
+NET LedLim1(2) LOC =P6;
+NET LedLim1(1) LOC =P8;
+NET LedLim1(0) LOC =P12;
+
+NET LedLim2(5) LOC =T6;
+NET LedLim2(4) LOC =T9;
+NET LedLim2(3) LOC =M12;
+NET LedLim2(2) LOC =N6;
+NET LedLim2(1) LOC =P9;
+NET LedLim2(0) LOC =N12;

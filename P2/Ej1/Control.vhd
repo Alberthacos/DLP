@@ -16,7 +16,10 @@ ENTITY Control IS
         sensor: in std_logic ;
         Foco: out std_logic;
         Vibrador: out std_logic;
-        buzzer: out std_logic
+        buzzer: out std_logic;
+        Segmentos : out std_logic_vector(7 downto 0);
+        anodos : out std_logic_vector(3 downto 0)
+		  
     );
 
 END ENTITY Control;
@@ -32,10 +35,14 @@ Control_acceso: process(sensor)
         buzzer <= '1';
         vibrador <= '1';
         Foco <= '1';
+        Segmentos <= "00010000";
+        anodos <= "0111";
     else  
         buzzer <= '0';
         vibrador <= '0';
         Foco <= '0';
+        Segmentos <= "11111111";
+        anodos <= "1111";
 end if;
 --------------------------------------------------------------------------------
 -- Agregar temporizador despues de un accionamiento 

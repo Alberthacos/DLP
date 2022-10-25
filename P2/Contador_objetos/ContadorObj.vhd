@@ -55,7 +55,7 @@ BEGIN
     Conteo : PROCESS (contador, lim, Sout) BEGIN
 
         IF (reset = '0') THEN --No se presiona el boton de reset
-            IF rising_edge(Sout) AND contador < lim THEN --flanco ascendente del sensor (Deteccion de un obj)
+            IF falling_edge(Sout) AND contador < lim THEN --flanco ascendente del sensor (Deteccion de un obj)
                 Contador <= Contador + 1; --Aumenta en uno el contador por cada deteccion
             END IF;
 
@@ -238,38 +238,7 @@ BEGIN
         END CASE;
     END PROCESS;
     --------------------------------------------------------------------------------
-    --------------------------------------------------------------------------------
-    servomotor : PROCESS (clk, pwm_count, Selector)
-        CONSTANT pos1 : INTEGER := 24000; --representa a 1.00ms = 0 // 0.5ms 0 deg
-        CONSTANT pos2 : INTEGER := 68500; --representa a 1.25ms = 45 // 1.5 90 deg
-        --        CONSTANT Max : NATURAL := 500000;
-    BEGIN
-
-        IF rising_edge(clk) THEN --reloj para pwm, realiza el conteo 
-            PWM_Count <= PWM_Count + 1;
-        END IF;
-
-        CASE (selector) IS
-
-            WHEN '0' => --con el selector en 0 se posiciona en servo en 0°
-                IF PWM_Count <= pos1 THEN
-                    PWM <= '1';
-                ELSE
-                    PWM <= '0';
-                END IF;
-
-            WHEN '1' => -- con el selector en 1 se posiciona en servo en 90°
-                IF PWM_Count <= pos2 THEN
-                    PWM <= '1';
-                ELSE
-                    PWM <= '0';
-                END IF;
-
-            WHEN OTHERS => NULL;
-
-        END CASE;
-
-    END PROCESS;
+ 
     --------------------------------------------------------------------------------
 END Behavioral;
 

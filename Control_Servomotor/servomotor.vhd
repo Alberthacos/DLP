@@ -18,7 +18,7 @@ ENTITY PWM IS
 
    PORT (
       clk : IN STD_LOGIC;--reloj de 50MHz
-      enable :  in STD_LOGIC;
+      enable : IN STD_LOGIC;
       -- selector : IN STD_LOGIC_VECTOR (1 DOWNTO 0);--selecciona las 4 posiciones
       entrada : IN STD_LOGIC;
       PWM : OUT STD_LOGIC);--terminal donde sale la señal de PWM
@@ -28,7 +28,7 @@ END PWM;
 ARCHITECTURE PWM OF PWM IS
 
    SIGNAL PWM_Count : INTEGER RANGE 1 TO Max;--500000;
-   SIGNAL selector : STD_LOGIC_VECTOR(1 DOWNTO 0) := "00";
+   SIGNAL selector : STD_LOGIC_VECTOR(2 DOWNTO 0) := "000";
    SIGNAL conta_1250us : INTEGER RANGE 1 TO 20000000 := 1; -- pulso1 de 1250us@400Hz (0.25ms)
    SIGNAL SAL_400Hz : STD_LOGIC := '0';
 BEGIN
@@ -37,14 +37,16 @@ BEGIN
 
    PROCESS (clk, selector, PWM_Count)
       ----Para engranes metalicos
-      --CONSTANT pos1 : INTEGER := 25000; --representa a 1.00ms = 0 // 0.5ms 0 deg
-      --CONSTANT pos2 : INTEGER := 65000; --representa a 1.25ms = 45 // 1.5 90 deg
-      --CONSTANT pos3 : INTEGER := 110000; --representa a 1.50ms = 90 // 2.5 180 deg
-   
+      CONSTANT pos1 : INTEGER := 25000; --representa a 1.00ms = 0 // 0.5ms 0 deg 24000
+      CONSTANT pos2 : INTEGER := 44750;
+      CONSTANT pos3 : INTEGER := 65000; --representa a 1.25ms = 45 // 1.5 90 deg  65000
+      CONSTANT pos4 : INTEGER := 85250;
+      CONSTANT pos5 : INTEGER := 110000; --representa a 1.50ms = 90 // 2.5 180 deg  110000
+
       --Para engranes plasticos MOT100
-      CONSTANT pos1 : INTEGER := 24000; --representa a 1.00ms = 0 // 0.5ms 0 deg
-      CONSTANT pos2 : INTEGER := 68500; --representa a 1.25ms = 45 // 1.5 90 deg
-      CONSTANT pos3 : INTEGER := 125000; --representa a 1.50ms = 90 // 2.5 180 deg
+      --CONSTANT pos1 : INTEGER := 24000; --representa a 1.00ms = 0 // 0.5ms 0 deg
+      --CONSTANT pos2 : INTEGER := 68500; --representa a 1.25ms = 45 // 1.5 90 deg
+      --CONSTANT pos3 : INTEGER := 120000; --representa a 1.50ms = 90 // 2.5 180 deg
    BEGIN
 
       IF rising_edge(clk) THEN
@@ -53,17 +55,17 @@ BEGIN
       END IF;
       IF (ENABLE = '1') THEN
          IF (SAL_400Hz'EVENT AND SAL_400Hz = '1') THEN
-            IF selector <= "11" THEN
+            IF selector <= "100" THEN
                selector <= selector + '1';
             ELSE
-               selector <= "00";
+               selector <= "000";
             END IF;
          END IF;
       END IF;
 
       CASE (selector) IS
 
-         WHEN "00" => --con el selector en 00 se posiciona en servo en 0°
+         WHEN "000" => --con el selector en 00 se posiciona en servo en 0°
 
             IF PWM_Count <= pos1 THEN
                PWM <= '1';
@@ -73,7 +75,7 @@ BEGIN
 
             END IF;
 
-         WHEN "01" => -- con el selector en 01 se posiciona en servo en 45°
+         WHEN "001" => -- con el selector en 01 se posiciona en servo en 45°
 
             IF PWM_Count <= pos2 THEN
                PWM <= '1';
@@ -83,7 +85,7 @@ BEGIN
 
             END IF;
 
-         WHEN "10" => -- con el selector en 11 se posiciona en servo en 90°
+         WHEN "010" => -- con el selector en 11 se posiciona en servo en 90°
 
             IF PWM_Count <= pos3 THEN
                PWM <= '1';
@@ -92,9 +94,18 @@ BEGIN
                PWM <= '0';
 
             END IF;
-         WHEN "11" => -- con el selector en 11 se posiciona en servo en 90°
+         WHEN "011" => -- con el selector en 11 se posiciona en servo en 135°
 
-            IF PWM_Count <= pos2 THEN
+            IF PWM_Count <= pos4 THEN
+               PWM <= '1';
+
+            ELSE
+               PWM <= '0';
+
+            END IF;
+         WHEN "100" => -- con el selector en 11 se posiciona en servo en 180°
+
+            IF PWM_Count <= pos5 THEN
                PWM <= '1';
 
             ELSE

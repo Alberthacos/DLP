@@ -1,0 +1,28 @@
+NET CLK LOC=E7;
+NET resetB LOC=L1;
+NET resetP LOC=J1;
+NET A LOC=D3;
+NET B LOC=D5;
+//Salida a leds indicadores para el contador 
+NET contador(4) LOC=N8;
+NET contador(3) LOC=P11;
+NET contador(2) LOC=P6;
+NET contador(1) LOC=P8;
+NET contador(0) LOC=P12;
+//Salida a segmentos del display 
+NET display(7) LOC=P16;
+NET display(6) LOC=P15;
+NET display(5) LOC=T15;
+NET display(4) LOC=T14;
+NET display(3) LOC=T13;
+NET display(2) LOC=R16;
+NET display(1) LOC=R15;
+NET display(0) LOC=R14;
+//Salida a anodos del display 
+NET AN(0) LOC=;
+NET AN(1) LOC=;
+NET AN(2) LOC=;
+NET AN(3) LOC=;
+
+NET servomotor LOC=B15;
+NET servoLED LOC=N1;

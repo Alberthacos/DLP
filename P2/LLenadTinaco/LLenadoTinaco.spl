@@ -1,0 +1,8 @@
+[Inputs]
+Enb
+=Sensor_Nivel_Tinaco[2:0]=
+=Sensor_Nivel_Cisterna[2:0]=
+[Outputs]
+Water_Pump
+=Level_Leds[5:0]=
+[BiDir]

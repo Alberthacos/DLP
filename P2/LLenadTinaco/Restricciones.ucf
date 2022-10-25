@@ -1,0 +1,18 @@
+NET Level_Leds(5) LOC=N12;
+NET Level_Leds(4) LOC=P9;
+NET Level_Leds(3) LOC=N6;
+NET Level_Leds(2) LOC=T6;
+NET Level_Leds(1) LOC=T4;
+NET Level_Leds(0) LOC=P1;
+
+NET Sensor_Nivel_Tinaco(2) LOC=b15;
+NET Sensor_Nivel_Tinaco(1) LOC=a13;
+NET Sensor_Nivel_Tinaco(0) LOC=a11;
+
+NET Sensor_Nivel_Cisterna(2) LOC=N5;
+NET Sensor_Nivel_Cisterna(1) LOC=P2;
+NET Sensor_Nivel_Cisterna(0) LOC=M1;
+
+NET Water_Pump LOC=N8;
+NET Enb 		LOC=L1;
+NET Enb CLOCK_DEDICATED_ROUTE=FALSE;

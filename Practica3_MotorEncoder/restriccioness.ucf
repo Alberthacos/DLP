@@ -1,0 +1,28 @@
+	#Asignacion de terminales para amiba 2 Ejercicio4 timbre de una casa 
+#Archivo guardado como *.ucf
+
+#Entradas
+net CLK loc = "E7" ;#Sensor 1 LDR
+
+net "Sensor1" loc= "M1";
+net "Sensor2" loc= "P2";
+
+
+net "Entradas[5]"  loc = "A7" ;#LED
+net "Entradas[4]" loc = "B8" ;
+
+#Salidas
+NET "puertos[4]" LOC=A10;
+NET "puertos[3]" LOC=C11;
+NET "puertos[2]" LOC=B14;
+NET "puertos[1]" LOC=B16;
+
+NET "leds[4]" LOC=N1;
+NET "leds[3]" LOC=R2;
+NET "leds[2]" LOC=R5;
+NET "leds[1]" LOC=N8;
+
+NET "LED[1]" LOC=N12;
+NET "LED[0]" LOC=T12;
+
+net "Buzzer"  loc= "B15";

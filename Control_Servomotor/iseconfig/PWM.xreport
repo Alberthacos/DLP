@@ -1,11 +1,11 @@
 <?xml version='1.0' encoding='UTF-8'?>
 <report-views version="2.0" >
  <header>
-  <DateModified>2022-09-14T16:19:31</DateModified>
+  <DateModified>2022-10-23T16:39:11</DateModified>
   <ModuleName>PWM</ModuleName>
   <SummaryTimeStamp>Unknown</SummaryTimeStamp>
   <SavedFilePath>C:/Users/amf01/Documents/DLP/Control_Servomotor/iseconfig/PWM.xreport</SavedFilePath>
-  <ImplementationReportsDirectory>C:/Users/amf01/Documents/DLP/Control_Servomotor</ImplementationReportsDirectory>
+  <ImplementationReportsDirectory>C:/Users/amf01/Documents/DLP/Control_Servomotor\</ImplementationReportsDirectory>
   <DateInitialized>2022-09-14T16:19:31</DateInitialized>
   <EnableMessageFiltering>false</EnableMessageFiltering>
  </header>
