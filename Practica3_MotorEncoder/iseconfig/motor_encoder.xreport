@@ -1,11 +1,11 @@
 <?xml version='1.0' encoding='UTF-8'?>
 <report-views version="2.0" >
  <header>
-  <DateModified>2022-10-23T21:55:45</DateModified>
+  <DateModified>2022-11-05T17:46:11</DateModified>
   <ModuleName>motor_encoder</ModuleName>
   <SummaryTimeStamp>Unknown</SummaryTimeStamp>
-  <SavedFilePath>C:/Users/Christian Lazcano/Documents/DLP/Practica3_MotorEncoder/iseconfig/motor_encoder.xreport</SavedFilePath>
-  <ImplementationReportsDirectory>C:/Users/Christian Lazcano/Documents/DLP/Practica3_MotorEncoder\</ImplementationReportsDirectory>
+  <SavedFilePath>C:/Users/amf01/Documents/DLP/Practica3_MotorEncoder/iseconfig/motor_encoder.xreport</SavedFilePath>
+  <ImplementationReportsDirectory>C:/Users/amf01/Documents/DLP/Practica3_MotorEncoder\</ImplementationReportsDirectory>
   <DateInitialized>2022-10-17T23:07:19</DateInitialized>
   <EnableMessageFiltering>false</EnableMessageFiltering>
  </header>

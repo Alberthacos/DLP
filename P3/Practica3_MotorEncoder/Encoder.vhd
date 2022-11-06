@@ -20,7 +20,7 @@ ENTITY Encoder IS
 
 		A, B : IN STD_LOGIC;
 		S1, S2 : IN STD_LOGIC;
-		BUZZ : OUT STD_LOGIC;
+--		BUZZ : OUT STD_LOGIC;
 		-- position of the shaft
 		-- direction indicator
 		LED : OUT STD_LOGIC_VECTOR (1 DOWNTO 0)

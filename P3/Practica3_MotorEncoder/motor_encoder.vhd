@@ -6,7 +6,7 @@ use ieee.std_logic_unsigned.all;
 
 ENTITY motor_encoder IS PORT(
 		S1,S2 : IN STD_LOGIC;
-		BUZZ : OUT STD_LOGIC;
+--		BUZZ : OUT STD_LOGIC;
 		CLK: in STD_LOGIC; -- reloj de 50MHz para la amiba2
 		Entradas : in STD_LOGIC_VECTOR (5 downto 4); -- Primeras dos entradas de amiba 2
 		puertos,leds : OUT std_logic_vector (1 to 4); --leds testigos y salida al puerto para el motor, representa el encdedido de las bobinas
@@ -37,7 +37,7 @@ port map (
 		leds => leds,
 		S1 => S1,
 		S2 => S2,
-		BUZZ => BUZZ,
+----		BUZZ => BUZZ,
 		LED=>LED
 		);
 		
