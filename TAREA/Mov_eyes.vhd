@@ -18,7 +18,7 @@ ARCHITECTURE Behavioral OF Mov_eyes IS
 
 
     SIGNAL PWM_Count : INTEGER RANGE 1 TO Max;--500000;
-    SIGNAL selector : STD_LOGIC_VECTOR(1 DOWNTO 0) := "00";
+    SIGNAL selector : STD_LOGIC := '0';
     SIGNAL Conta250 : INTEGER RANGE 1 TO 250_000_000 := 1;
 
     CONSTANT posL : INTEGER := 50000; --representa a 1.00ms = 0°
@@ -34,14 +34,14 @@ BEGIN
         IF SeqNum = 1 THEN
             CASE (selector) IS
 
-                WHEN "00" => --caso 1, ojos izquierda
+                WHEN '0' => --caso 1, ojos izquierda
                     IF PWM_Count <= posL THEN
                         Servo1 <= '1';
                     ELSE
                         Servo1 <= '0';
                     END IF;
 
-                WHEN "01" => --caso 2, ojos derecha
+                WHEN '1' => --caso 2, ojos derecha
                     IF PWM_Count <= posR THEN
                         Servo1 <= '1';
                     ELSE
@@ -56,14 +56,14 @@ BEGIN
 
             CASE (selector) IS
 
-                WHEN "00" => --caso 0, ojos arriba
+                WHEN '0' => --caso 0, ojos arriba
                     IF PWM_Count <= posU THEN
                         Servo2 <= '1';
                     ELSE
                         Servo2 <= '0';
                     END IF;
 
-                WHEN "01" => --caso 1, ojos abajo
+                WHEN '1' => --caso 1, ojos abajo
                     IF PWM_Count <= posD THEN
                         Servo2 <= '1';
                     ELSE
@@ -84,12 +84,7 @@ BEGIN
             PWM_Count <= PWM_Count + 1;
 
             IF (Conta250 = 20_000_000) THEN --cuenta 1250ms (50MHz=62500) 62500*20us = 1.25ms 1/(2*1.25ms)=400Hz
-                    IF selector < "01" THEN
-                        selector <= selector + '1';
-                    ELSE
-                        selector <= "00";
-                    END IF;
-
+                        selector <=NOT(selector);
                 Conta250 <= 1;
             ELSE
                 Conta250 <= Conta250 + 1;

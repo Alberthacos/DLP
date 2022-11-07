@@ -36,8 +36,8 @@ BEGIN
 
             --END IF;
             IF EnableCount = '1' THEN
-                IF (CountCycles = 20_000_000) THEN --cuenta 1250ms (50MHz=62500) 62500*20us = 1.25ms 1/(2*1.25ms)=400Hz
-                    IF NumCycles = 15 THEN
+                IF (CountCycles = 30_000_000) THEN --cuenta 1250ms (50MHz=62500) 62500*20us = 1.25ms 1/(2*1.25ms)=400Hz
+                    IF NumCycles = 20 THEN
                         SeqNum <= 3;
                         NumCycles <= 1;
                         EnableCount <= '0';

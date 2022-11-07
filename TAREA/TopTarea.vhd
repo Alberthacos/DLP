@@ -10,10 +10,13 @@ ENTITY Tarea IS
 
         --Motor que controla la rotacion de la cabeza Con salida a pwm 
         --Sensores magneticos que limitan la rotacion de la cabeza
-        Motor_head : OUT STD_LOGIC;
+        Motor_headPWM : OUT STD_LOGIC;
+        Motor_RelayL : OUT STD_LOGIC;
+        Motor_RelayR : OUT STD_LOGIC;
         LS_HL : IN STD_LOGIC;
         LS_HR : IN STD_LOGIC;
-
+        LS_HC : IN STD_LOGIC;
+        
         --Servos que controlan el movimiento de los brazos 
         Srv_ArmL : OUT STD_LOGIC;
         Srv_ArmR : OUT STD_LOGIC;
@@ -51,18 +54,26 @@ BEGIN
             Servo2 => Srv_eyes_UD 
         );
 
---    A2 : ENTITY work.MovArms
---        PORT MAP(
---            clk => clk,
---            Srv_eyes_LR
---        );
---
---    A3 : ENTITY work.MovH
---        PORT MAP(
---            clk => clk,
---            Srv_eyes_LR
---        );
---
+    A2 : ENTITY work.MovArms
+        PORT MAP(
+            clk => clk,
+            SeqNum => SeqNum, --Solo lectura
+            ServoL => Srv_ArmL,
+            Servor => Srv_ArmR
+        );
+
+    A3 : ENTITY work.MovH
+        PORT MAP(
+            clk => clk,
+            SeqNum => SeqNum, --Solo lectura
+            Motor_headPWM => Motor_headPWM,
+            Motor_RelayL => Motor_RelayL,
+            Motor_RelayR => Motor_RelayR,
+            LS_C => LS_HC,
+            LS_R => LS_HR, 
+            LS_L => LS_HL 
+        );
+
 --    
 --    A4 : ENTITY work.Leds
 --        PORT MAP(
