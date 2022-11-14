@@ -51,8 +51,8 @@ ARCHITECTURE Behavioral OF MovH IS
     SIGNAL ENC : INTEGER RANGE 0 TO 10 := 0;
     SIGNAL seqnum : INTEGER RANGE 0 TO 50 := 0;
 
-    CONSTANT Speed1 : INTEGER := 100000; --representa a 1.50ms = 90°
-    CONSTANT Speed2 : INTEGER := 200000; --representa a 2.00ms = 180°
+    CONSTANT Speed1 : INTEGER := 80000; --representa a 1.50ms = 90°
+    CONSTANT Speed2 : INTEGER := 100000; --representa a 2.00ms = 180°
 BEGIN
     PROCESS (PWM_Count, SeqNum, SELECTOR, ls_l, ls_r)
     BEGIN
@@ -113,7 +113,7 @@ BEGIN
                 END IF;
                 --sentido derecho (hacia el centro)
                 IF (LS_L = '0' OR MC = '1') AND LS_C = '1' AND ML = '0' THEN
-                    MC <= '1';
+                    MC <= '1';`
                     Motor_RelayR <= '0';
                 ELSE
                     MC <= '0';
@@ -229,3 +229,5 @@ BEGIN
     LEDS <= NumL;
 
 END Behavioral;
+
+

@@ -1,11 +1,11 @@
 <?xml version='1.0' encoding='UTF-8'?>
 <report-views version="2.0" >
  <header>
-  <DateModified>2022-10-22T15:04:55</DateModified>
+  <DateModified>2022-11-10T22:26:35</DateModified>
   <ModuleName>encoder</ModuleName>
   <SummaryTimeStamp>Unknown</SummaryTimeStamp>
   <SavedFilePath>C:/Users/amf01/Documents/DLP/P3/Servo_Encoder/iseconfig/encoder.xreport</SavedFilePath>
-  <ImplementationReportsDirectory>C:/Users/amf01/Documents/DLP/P3/Servo_Encoder</ImplementationReportsDirectory>
+  <ImplementationReportsDirectory>C:/Users/amf01/Documents/DLP/P3/Servo_Encoder\</ImplementationReportsDirectory>
   <DateInitialized>2022-10-22T15:04:54</DateInitialized>
   <EnableMessageFiltering>false</EnableMessageFiltering>
  </header>
