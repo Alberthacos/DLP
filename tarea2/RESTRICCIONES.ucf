@@ -1,0 +1,45 @@
+NET CLK LOC=E7; //reloj 
+NET reset_n LOC=L1;
+NET scl LOC=B15;
+NET sda LOC=A13;
+
+NET i2c_ack_err LOC=M4;
+
+NET adc_ch0_data(11) LOC=N1;
+NET adc_ch0_data(10) LOC=R2;
+NET adc_ch0_data(9) LOC=R5;
+NET adc_ch0_data(8) LOC=N8;
+NET adc_ch0_data(7) LOC=P11;
+NET adc_ch0_data(6) LOC=P6;
+NET adc_ch0_data(5) LOC=P8;
+NET adc_ch0_data(4) LOC=P12;
+#NET adc_ch0_data(3) LOC=;
+#NET adc_ch0_data(2) LOC=;
+#NET adc_ch0_data(1) LOC=;
+#NET adc_ch0_data(0) LOC=;
+#
+#NET adc_ch1_data(11) LOC=;
+#NET adc_ch1_data(10) LOC=;
+#NET adc_ch1_data(9) LOC=;
+#NET adc_ch1_data(8) LOC=;
+#NET adc_ch1_data(7) LOC=;
+#NET adc_ch1_data(6) LOC=;
+#NET adc_ch1_data(5) LOC=;
+#NET adc_ch1_data(4) LOC=;
+#NET adc_ch1_data(3) LOC=;
+#NET adc_ch1_data(2) LOC=;
+#NET adc_ch1_data(1) LOC=;
+#NET adc_ch1_data(0) LOC=;
+
+
+
+
+
+
+
+
+#NET adc_ch2_data LOC=;
+#NET adc_ch3_data LOC=;
+
+
+

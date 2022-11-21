@@ -24,8 +24,9 @@ ENTITY SpeedMotors IS
     PORT (
         CLK : IN STD_LOGIC; --Reloj 50 MHz
         PB1, PB2 : IN STD_LOGIC; --Botones que seleccionan los estados
-        M1, M2 : OUT STD_LOGIC := '0'; --Salida PWM hacia los motores, salida a transistor
+        M1, M2 : INOUT STD_LOGIC := '0'; --Salida PWM hacia los motores, salida a transistor
         SPK1_Min, SPK1_Max : OUT STD_LOGIC := '0'; --Salidas para sonido
+        LedM1,LedM2 : OUT STD_LOGIC := '0'; 
         
         RGB1, RGB2 : OUT STD_LOGIC_VECTOR(2 DOWNTO 0) --Salida a leds RGB que indican las velocidades
     );
@@ -38,12 +39,14 @@ ARCHITECTURE Behavioral OF SpeedMotors IS
     SIGNAL sampledPB1, sampledPB2 : STD_LOGIC; --Señal de muestra para comparar despues del tiempo sclk*(20us)
     SIGNAL PB1_DEB, PB2_DEB : STD_LOGIC; --Señal de botones sin ruido, señal final
     SIGNAL PBS : STD_LOGIC; --Señal de botones sin ruido, señal final
-
     SIGNAL Conta1, Conta2 : INTEGER RANGE 0 TO 5 := 0; --Contador de estados
 
     SIGNAL PWM_Count : INTEGER RANGE 1 TO Max;--500000;
 BEGIN
     PBS <= PB1_DEB OR PB2_DEB;
+
+    LedM1 <= M1;
+    LedM2 <= M2;
 
     ContadorEstados : PROCESS (PB1_DEB, Conta1, pbs, conta2, PB2_DEB)
     BEGIN
@@ -99,11 +102,11 @@ BEGIN
 
         END CASE;
 
-        IF conta1 = 1 THEN --contador en estado 1, velocidad al minimo 
+        IF conta1 = 1 OR Conta2 = 1 THEN --contador en estado 1, velocidad al minimo 
             SPK1_Min <= '0';
             SPK1_Max <= '1';
             
-            ELSIF Conta1 = 3 THEN --Contador en estado 3, velocidad al maximo 
+            ELSIF Conta1 = 3 OR Conta2 = 3 THEN --Contador en estado 3, velocidad al maximo 
             SPK1_Max <= '0';
             SPK1_Min <= '1';
 
@@ -144,9 +147,9 @@ BEGIN
 
     PWMGen : PROCESS (clk, conta1, conta2, pwm_count)
         --Velocidades de PWM
-        CONSTANT Speed1 : INTEGER := 50000;
-        CONSTANT Speed2 : INTEGER := 200000;
-        CONSTANT Speed3 : INTEGER := 400000;
+        CONSTANT Speed1 : INTEGER := 90000;
+        CONSTANT Speed2 : INTEGER := 150000;
+        CONSTANT Speed3 : INTEGER := 250000;
 
     BEGIN
 

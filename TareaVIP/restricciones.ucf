@@ -1,0 +1,23 @@
+NET CLK LOC=E7;
+NET reset_n LOC=M1;
+NET scl LOC=A13;
+NET sda LOC=B15;
+#NET SEL LOC=P2;
+NET i2c_ack_err LOC=M4;
+
+NET temperature(15) LOC=N1;
+NET temperature(14) LOC=R2;
+NET temperature(13) LOC=R5;
+NET temperature(12) LOC=N8;
+NET temperature(11) LOC=P11;
+NET temperature(10) LOC=P6;
+NET temperature(9) LOC=P8;
+NET temperature(8) LOC=P12;
+NET temperature(7) LOC=P1;
+NET temperature(6) LOC=T4;
+NET temperature(5) LOC=T6;
+NET temperature(4) LOC=T9;
+NET temperature(3) LOC=M12;
+NET temperature(2) LOC=N6;
+NET temperature(1) LOC=P9;
+NET temperature(0) LOC=N12;

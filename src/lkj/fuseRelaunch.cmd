@@ -1,0 +1,1 @@
+-intstyle "ise" -incremental -lib "secureip" -o "C:/Users/amf01/Documents/DLP/src/lkj/pmod_temp_sensor_adt7420_isim_beh.exe" -prj "C:/Users/amf01/Documents/DLP/src/lkj/pmod_temp_sensor_adt7420_beh.prj" "work.pmod_temp_sensor_adt7420" 

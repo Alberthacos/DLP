@@ -1,0 +1,24 @@
+NET "Catodos(6)" LOC = "P16"; # a
+NET "Catodos(5)" LOC = "P15"; # b
+NET "Catodos(4)" LOC = "T15"; # c
+NET "Catodos(3)" LOC = "T14"; # d
+NET "Catodos(2)" LOC = "T13"; # e
+NET "Catodos(1)" LOC = "R16"; # f
+NET "Catodos(0)" LOC = "R15"; # g
+
+NET CLK50Mhz LOC = E7;
+
+NET ANODOS(3) LOC = D16; # AN4
+NET ANODOS(2) LOC = E16; # AN5
+NET ANODOS(1) LOC = F16; # AN6
+NET ANODOS(0) LOC = G16; # AN7
+
+NET BINARIO(7) LOC=M1;
+NET BINARIO(6) LOC=P2;
+NET BINARIO(5) LOC=N5;
+NET BINARIO(4) LOC=T7;
+NET BINARIO(3) LOC=R9;
+NET BINARIO(2) LOC=P4;
+NET BINARIO(1) LOC=R7;
+NET BINARIO(0) LOC=N9;
+

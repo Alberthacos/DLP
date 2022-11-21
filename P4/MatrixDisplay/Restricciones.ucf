@@ -1,6 +1,6 @@
 NET CLK LOC=E7;
 #NET dir LOC=M1;
-NET hold LOC=L1;
+NET hold LOC=D5;
 NET SonidoOUT LOC=D3;
 
 

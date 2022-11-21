@@ -1,0 +1,13 @@
+Running: C:\Xilinx\14.7\ISE_DS\ISE\bin\nt64\unwrapped\fuse.exe -intstyle ise -incremental -lib secureip -o C:/Users/amf01/Documents/DLP/src/lkj/pmod_temp_sensor_adt7420_isim_beh.exe -prj C:/Users/amf01/Documents/DLP/src/lkj/pmod_temp_sensor_adt7420_beh.prj work.pmod_temp_sensor_adt7420 
+ISim P.20131013 (signature 0x7708f090)
+Number of CPUs detected in this system: 4
+Turning on mult-threading, number of parallel sub-compilation jobs: 8 
+Determining compilation order of HDL files
+Parsing VHDL file "C:/Users/amf01/Documents/DLP/src/lkj/../../../../Downloads/i2c_master (1).vhd" into library work
+WARNING:HDLCompiler:957 - "C:/Users/amf01/Documents/DLP/src/lkj/../../../../Downloads/i2c_master (1).vhd" Line 86: Case choice must be a locally static expression
+WARNING:HDLCompiler:957 - "C:/Users/amf01/Documents/DLP/src/lkj/../../../../Downloads/i2c_master (1).vhd" Line 89: Case choice must be a locally static expression
+WARNING:HDLCompiler:957 - "C:/Users/amf01/Documents/DLP/src/lkj/../../../../Downloads/i2c_master (1).vhd" Line 92: Case choice must be a locally static expression
+Parsing VHDL file "C:/Users/amf01/Documents/DLP/src/lkj/../../../../Downloads/pmod_temp_sensor_adt7420.vhd" into library work
+ERROR:HDLCompiler:439 - "C:/Users/amf01/Documents/DLP/src/lkj/../../../../Downloads/pmod_temp_sensor_adt7420.vhd" Line 58: Formal port ack_error of mode buffer cannot be associated with actual port i2c_ack_err of mode out
+ERROR:HDLCompiler:854 - "C:/Users/amf01/Documents/DLP/src/lkj/../../../../Downloads/pmod_temp_sensor_adt7420.vhd" Line 21: Unit <behavior> ignored due to previous errors.
+VHDL file C:/Users/amf01/Documents/DLP/src/lkj/../../../../Downloads/pmod_temp_sensor_adt7420.vhd ignored due to errors

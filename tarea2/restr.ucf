@@ -1,0 +1,22 @@
+NET CLK LOC=E7;
+NET reset_n LOC=L1;
+NET start LOC = J1;
+
+NET scl LOC=A13;
+NET sda LOC=B15;
+
+NET data_rd(31) LOC=N1;
+NET data_rd(30) LOC=R2;
+NET data_rd(29) LOC=R5;
+NET data_rd(28) LOC=N8;
+NET data_rd(27) LOC=P11;
+NET data_rd(26) LOC=P6;
+NET data_rd(25) LOC=P8;
+NET data_rd(24) LOC=P12;
+NET data_rd(23) LOC=P1;
+NET data_rd(22) LOC=T4;
+NET data_rd(21) LOC=T6;
+NET data_rd(20) LOC=T9;
+NET data_rd(19) LOC=M12;
+NET data_rd(18) LOC=N6;
+NET data_rd(17) LOC=P9;
