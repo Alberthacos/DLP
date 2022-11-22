@@ -28,7 +28,7 @@ ARCHITECTURE behavior OF ADCcompleto IS
   SIGNAL i2c_data_rd : STD_LOGIC_VECTOR(7 DOWNTO 0);  --i2c read data
   SIGNAL i2c_busy    : STD_LOGIC;                     --i2c busy signal
   SIGNAL busy_prev   : STD_LOGIC;                     --previous value of i2c busy signal
-  SIGNAL temp_data   : STD_LOGIC_VECTOR(15 DOWNTO 0); --val data buffer
+  SIGNAL temp_data   : STD_LOGIC_VECTOR(31 DOWNTO 0); --val data buffer
 
   COMPONENT i2c_master IS
     GENERIC(
@@ -95,11 +95,11 @@ BEGIN
               i2c_data_wr <= "00000001";   --config reg                --send the address (x03) of the Configuration Register, reg conversion
               --WHEN 1 =>                                    --1st busy high: command 1 latched, okay to issue command 2
             WHEN 1 => 
-              i2c_data_wr <= "00000010";   --config 16-8                --send the address (x03) of the Configuration Register, reg conversion
+              i2c_data_wr <= "00000110";   --config 16-8                --send the address (x03) of the Configuration Register, reg conversion
                 --(15-OS// 14-12 multiplexor // 11-9 ganancia // 8 modo operacion )
               WHEN 2 => 
               i2c_data_wr <= "00000011";   --config 7-0                --send the address (x03) of the Configuration Register, reg conversion
-            WHEN 3 =>                                    --2nd busy high: command 2 latched
+              WHEN 3 =>                                    --2nd busy high: command 2 latched
               i2c_ena <= '0';                              --deassert enable to stop transaction after command 2
                 IF(i2c_busy = '0') THEN                      --transaction complete
                 busy_cnt := 0;                               --reset busy_cnt for next transaction
@@ -133,17 +133,31 @@ BEGIN
               WHEN 1 =>
               i2c_rw <= '1';                               --command 1 is a write
                                                 --2nd busy high: command 2 latched, okay to issue command 3
-            WHEN 2 =>                                    --2nd busy high: command 2 latched, okay to issue command 3
+             WHEN 2 =>                                    --2nd busy high: command 2 latched, okay to issue command 3
               IF(i2c_busy = '0') THEN                      --indicates data read in command 2 is ready
                 temp_data(15 DOWNTO 8) <= i2c_data_rd;       --retrieve MSB data from command 2
               END IF;
-            WHEN 3 =>                                    --3rd busy high: command 3 latched
+
+              WHEN 3 =>                                    --3rd busy high: command 3 latched
               i2c_ena <= '0';                              --deassert enable to stop transaction after command 3
               IF(i2c_busy = '0') THEN                      --indicates data read in command 3 is ready
-                temp_data(7 DOWNTO 0) <= i2c_data_rd;        --retrieve LSB data from command 3
-                busy_cnt := 0;                               --reset busy_cnt for next transaction
-                state <= output_result;                      --advance to output the result
+              temp_data(7 DOWNTO 0) <= i2c_data_rd;        --retrieve LSB data from command 3
+              busy_cnt := 0;                               --reset busy_cnt for next transaction
+              state <= output_result;                      --advance to output the result
               END IF;
+
+              --WHEN 4 => 
+              --IF(i2c_busy = '0') THEN                      --indicates data read in command 2 is ready
+              --temp_data(31 DOWNTO 24) <= i2c_data_rd;       --retrieve MSB data from command 2
+              --END IF;
+--
+              --WHEN 5 => 
+              --IF(i2c_busy = '0') THEN                      --indicates data read in command 2 is ready
+              --temp_data(23 DOWNTO 16) <= i2c_data_rd;       --retrieve MSB data from command 2
+              --busy_cnt := 0;                               --reset busy_cnt for next transaction
+              --state <= output_result;                      --advance to output the result
+              --END IF;
+
             WHEN OTHERS => NULL;
           END CASE;
 

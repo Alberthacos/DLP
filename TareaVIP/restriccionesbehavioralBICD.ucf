@@ -1,3 +1,10 @@
+NET clk LOC = E7;
+
+NET reset_n LOC=M1;
+NET SCL LOC=A13;
+NET SDA LOC=B15;
+NET i2c_ack_err LOC=M4;
+
 NET "display(7)" LOC = "P16"; # a
 NET "display(6)" LOC = "P15"; # b
 NET "display(5)" LOC = "T15"; # c
@@ -6,11 +13,6 @@ NET "display(3)" LOC = "T13"; # e
 NET "display(2)" LOC = "R16"; # f
 NET "display(1)" LOC = "R15"; # g
 
-NET clk LOC = E7;
-#NET RESET LOC =L1;
-#NET UpDown(1) LOC=J1;
-#NET UpDown(0) LOC=J3;
-#
 NET AN(7) LOC = E11; # AN4
 NET AN(6) LOC = D11; # AN5
 NET AN(5) LOC = C15; # AN6
@@ -55,13 +57,13 @@ NET binary_in(2) LOC=P4;
 NET binary_in(1) LOC=R7;
 NET binary_in(0) LOC=N9;
 
-NET BCD0(3) LOC=N1;
-NET BCD0(2) LOC=R2;
-NET BCD0(1) LOC=R5;
-NET BCD0(0) LOC=N8;
-
-NET BCD1(3) LOC=P11;
-NET BCD1(2) LOC=P6;
-NET BCD1(1) LOC=P8;
-NET BCD1(0) LOC=P12;
+#NET BCD0(3) LOC=N1;
+#NET BCD0(2) LOC=R2;
+#NET BCD0(1) LOC=R5;
+#NET BCD0(0) LOC=N8;
+#
+#NET BCD1(3) LOC=P11;
+#NET BCD1(2) LOC=P6;
+#NET BCD1(1) LOC=P8;
+#NET BCD1(0) LOC=P12;
 

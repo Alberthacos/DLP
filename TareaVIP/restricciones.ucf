@@ -1,23 +1,47 @@
-NET CLK LOC=E7;
+#NET CLK LOC=E7;
+#NET reset_n LOC=M1;
+#NET scl LOC=A13;
+#NET sda LOC=B15;
+##NET SEL LOC=P2;
+#NET i2c_ack_err LOC=M4;
+#
+#NET temperature(15) LOC=N1;
+#NET temperature(14) LOC=R2;
+#NET temperature(13) LOC=R5;
+#NET temperature(12) LOC=N8;
+#NET temperature(11) LOC=P11;
+#NET temperature(10) LOC=P6;
+#NET temperature(9) LOC=P8;
+#NET temperature(8) LOC=P12;
+#NET temperature(7) LOC=P1;
+#NET temperature(6) LOC=T4;
+#NET temperature(5) LOC=T6;
+#NET temperature(4) LOC=T9;
+#NET temperature(3) LOC=M12;
+#NET temperature(2) LOC=N6;
+#NET temperature(1) LOC=P9;
+#NET temperature(0) LOC=N12;
+NET clk LOC = E7;
+
 NET reset_n LOC=M1;
-NET scl LOC=A13;
-NET sda LOC=B15;
-#NET SEL LOC=P2;
+NET SCL LOC=A13;
+NET SDA LOC=B15;
 NET i2c_ack_err LOC=M4;
 
-NET temperature(15) LOC=N1;
-NET temperature(14) LOC=R2;
-NET temperature(13) LOC=R5;
-NET temperature(12) LOC=N8;
-NET temperature(11) LOC=P11;
-NET temperature(10) LOC=P6;
-NET temperature(9) LOC=P8;
-NET temperature(8) LOC=P12;
-NET temperature(7) LOC=P1;
-NET temperature(6) LOC=T4;
-NET temperature(5) LOC=T6;
-NET temperature(4) LOC=T9;
-NET temperature(3) LOC=M12;
-NET temperature(2) LOC=N6;
-NET temperature(1) LOC=P9;
-NET temperature(0) LOC=N12;
+NET "display(7)" LOC = "P16"; # a
+NET "display(6)" LOC = "P15"; # b
+NET "display(5)" LOC = "T15"; # c
+NET "display(4)" LOC = "T14"; # d
+NET "display(3)" LOC = "T13"; # e
+NET "display(2)" LOC = "R16"; # f
+NET "display(1)" LOC = "R15"; # g
+
+NET AN(7) LOC = E11; # AN4
+NET AN(6) LOC = D11; # AN5
+NET AN(5) LOC = C15; # AN6
+NET AN(4) LOC = e15; # AN7
+NET AN(3) LOC = g16; # AN7
+
+NET AN(2) LOC = F16; # AN5
+NET AN(1) LOC = E16; # AN6
+NET AN(0) LOC = D16; # AN7
