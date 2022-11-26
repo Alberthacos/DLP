@@ -65,7 +65,7 @@ begin
         case state is
             when start =>
                 state_next <= shift;
-                binary_next <= binary_in(15 downto 1) & '0';
+                binary_next <= '0' & binary_in(14 downto 0);
                 bcds_next <= (others => '0');
                 shift_counter_next <= 0;
             when shift =>

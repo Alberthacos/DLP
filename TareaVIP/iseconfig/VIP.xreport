@@ -1,11 +1,11 @@
 <?xml version='1.0' encoding='UTF-8'?>
 <report-views version="2.0" >
  <header>
-  <DateModified>2022-11-22T01:55:29</DateModified>
+  <DateModified>2022-11-25T23:05:13</DateModified>
   <ModuleName>VIP</ModuleName>
   <SummaryTimeStamp>2022-11-22T01:54:33</SummaryTimeStamp>
   <SavedFilePath>C:/Users/amf01/Documents/DLP/TareaVIP/iseconfig/VIP.xreport</SavedFilePath>
-  <ImplementationReportsDirectory>C:/Users/amf01/Documents/DLP/TareaVIP</ImplementationReportsDirectory>
+  <ImplementationReportsDirectory>C:/Users/amf01/Documents/DLP/TareaVIP\</ImplementationReportsDirectory>
   <DateInitialized>2022-11-22T01:05:41</DateInitialized>
   <EnableMessageFiltering>false</EnableMessageFiltering>
  </header>

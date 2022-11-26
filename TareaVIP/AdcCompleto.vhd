@@ -91,16 +91,16 @@ BEGIN
             WHEN 0 =>                                    --no command latched in yet
               i2c_ena <= '1';                              --initiate the transaction
               i2c_addr <= temp_sensor_addr;                    --set the address of the ADC
-              i2c_rw <= '0';                               --command 0 is a write
+              i2c_rw <= '0';                                 --command 0 is a write
               i2c_data_wr <= "00000001";   --config reg                --send the address (x03) of the Configuration Register, reg conversion
               --WHEN 1 =>                                    --1st busy high: command 1 latched, okay to issue command 2
             WHEN 1 => 
-              i2c_data_wr <= "00000110";   --config 16-8                --send the address (x03) of the Configuration Register, reg conversion
+              i2c_data_wr <= "11000000";   --config 15-8                --send the address (x03) of the Configuration Register, reg conversion
                 --(15-OS// 14-12 multiplexor // 11-9 ganancia // 8 modo operacion )
               WHEN 2 => 
               i2c_data_wr <= "00000011";   --config 7-0                --send the address (x03) of the Configuration Register, reg conversion
               WHEN 3 =>                                    --2nd busy high: command 2 latched
-              i2c_ena <= '0';                              --deassert enable to stop transaction after command 2
+              i2c_ena <= '0';                         --deassert enable to stop transaction after command 2
                 IF(i2c_busy = '0') THEN                      --transaction complete
                 busy_cnt := 0;                               --reset busy_cnt for next transaction
                 state <= read_data;  
