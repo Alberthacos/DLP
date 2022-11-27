@@ -22,10 +22,11 @@
 #NET temperature(1) LOC=P9;
 #NET temperature(0) LOC=N12;
 NET clk LOC = E7;
+NET ch  LOC = P2;
 
 NET reset_n LOC=M1;
-NET SCL LOC=A13;
-NET SDA LOC=B15;
+NET SCL LOC=D5;
+NET SDA LOC=C6;
 NET i2c_ack_err LOC=M4;
 
 NET "display(7)" LOC = "P16"; # a

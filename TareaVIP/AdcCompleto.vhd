@@ -11,6 +11,7 @@ ENTITY ADCcompleto IS
     temp_sensor_addr : STD_LOGIC_VECTOR(6 DOWNTO 0) := "1001000"); --I2C address of the temp sensor pmod
   PORT(
     clk         : IN    STD_LOGIC;                                 --system clock
+    ch          : IN    STD_LOGIC;
     reset_n     : IN    STD_LOGIC;                                 --asynchronous active-low reset
     scl         : INOUT STD_LOGIC;                                 --I2C serial clock
     sda         : INOUT STD_LOGIC;                                 --I2C serial data
@@ -92,19 +93,22 @@ BEGIN
               i2c_ena <= '1';                              --initiate the transaction
               i2c_addr <= temp_sensor_addr;                    --set the address of the ADC
               i2c_rw <= '0';                                 --command 0 is a write
-              i2c_data_wr <= "00000001";   --config reg                --send the address (x03) of the Configuration Register, reg conversion
-              --WHEN 1 =>                                    --1st busy high: command 1 latched, okay to issue command 2
+              i2c_data_wr <= "00000001";   --acceso a config reg                --send the address (x03) of the Configuration Register, reg conversion
             WHEN 1 => 
-              i2c_data_wr <= "11000000";   --config 15-8                --send the address (x03) of the Configuration Register, reg conversion
-                --(15-OS// 14-12 multiplexor // 11-9 ganancia // 8 modo operacion )
-              WHEN 2 => 
-              i2c_data_wr <= "00000011";   --config 7-0                --send the address (x03) of the Configuration Register, reg conversion
-              WHEN 3 =>                                    --2nd busy high: command 2 latched
+              IF ch = '0' then --canal 0
+                i2c_data_wr <= "11000000";   --config bits 15-8                --send the address (x03) of the Configuration Register, reg conversion
+                  --(15-OS// 14-12 multiplexor // 11-9 ganancia // 8 modo operacion )
+              else                  --canal 1
+                i2c_data_wr <= "11010000";
+              end if;
+            WHEN 2 => 
+              i2c_data_wr <= "00000011";   --config bits 7-0                --send the address (x03) of the Configuration Register, reg conversion
+            WHEN 3 =>                                    --2nd busy high: command 2 latched
               i2c_ena <= '0';                         --deassert enable to stop transaction after command 2
-                IF(i2c_busy = '0') THEN                      --transaction complete
-                busy_cnt := 0;                               --reset busy_cnt for next transaction
-                state <= read_data;  
-                END IF;
+              IF(i2c_busy = '0') THEN                      --transaction complete
+              busy_cnt := 0;                               --reset busy_cnt for next transaction
+              state <= read_data;  
+              END IF;
             WHEN OTHERS => NULL;
           END CASE;
           
@@ -114,7 +118,7 @@ BEGIN
             counter := counter + 1;                  --increment counter
           ELSE                                     --1.3us reached
             counter := 0;                            --clear counter
-            state <= read_data;                      --reading val data
+            state <= set_resolution;                      --reading val data
           END IF;
 			 
         --read ambient val data
@@ -125,44 +129,34 @@ BEGIN
           END IF;
 
           CASE busy_cnt IS                             --busy_cnt keeps track of which command we are on
-            WHEN 0 =>                                    --no command latched in yet
-              i2c_ena <= '1';                              --initiate the transaction
-              i2c_addr <= temp_sensor_addr;                --set the address of the temp sensor
-              i2c_rw <= '0';                               --command 1 is a write
-              i2c_data_wr <= "00000000";                   --send the address (x00) of the Temperature Value MSB Register
-              WHEN 1 =>
-              i2c_rw <= '1';                               --command 1 is a write
-                                                --2nd busy high: command 2 latched, okay to issue command 3
-             WHEN 2 =>                                    --2nd busy high: command 2 latched, okay to issue command 3
-              IF(i2c_busy = '0') THEN                      --indicates data read in command 2 is ready
-                temp_data(15 DOWNTO 8) <= i2c_data_rd;       --retrieve MSB data from command 2
-              END IF;
 
-              WHEN 3 =>                                    --3rd busy high: command 3 latched
-              i2c_ena <= '0';                              --deassert enable to stop transaction after command 3
-              IF(i2c_busy = '0') THEN                      --indicates data read in command 3 is ready
-              temp_data(7 DOWNTO 0) <= i2c_data_rd;        --retrieve LSB data from command 3
-              busy_cnt := 0;                               --reset busy_cnt for next transaction
-              state <= output_result;                      --advance to output the result
-              END IF;
+          WHEN 0 =>                                    --no command latched in yet
+          i2c_ena <= '1';                              --initiate the transaction
+          i2c_addr <= temp_sensor_addr;                --set the address of the temp sensor
+          i2c_rw <= '0';                               --command 1 is a write
+          i2c_data_wr <= "00000000";                   --send the address (x00) of the Temperature Value MSB Register
+          
+          WHEN 1 =>
+          i2c_rw <= '1';                               --command 1 is a write
+                                                       --2nd busy high: command 2 latched, okay to issue command 3
+          WHEN 2 =>                                    --2nd busy high: command 2 latched, okay to issue command 3
+          IF(i2c_busy = '0') THEN                      --indicates data read in command 2 is ready
+            temp_data(15 DOWNTO 8) <= i2c_data_rd;       --retrieve MSB data from command 2
+          END IF;
 
-              --WHEN 4 => 
-              --IF(i2c_busy = '0') THEN                      --indicates data read in command 2 is ready
-              --temp_data(31 DOWNTO 24) <= i2c_data_rd;       --retrieve MSB data from command 2
-              --END IF;
---
-              --WHEN 5 => 
-              --IF(i2c_busy = '0') THEN                      --indicates data read in command 2 is ready
-              --temp_data(23 DOWNTO 16) <= i2c_data_rd;       --retrieve MSB data from command 2
-              --busy_cnt := 0;                               --reset busy_cnt for next transaction
-              --state <= output_result;                      --advance to output the result
-              --END IF;
+          WHEN 3 =>                                    --3rd busy high: command 3 latched
+          i2c_ena <= '0';                              --deassert enable to stop transaction after command 3
+          IF(i2c_busy = '0') THEN                      --indicates data read in command 3 is ready
+          temp_data(7 DOWNTO 0) <= i2c_data_rd;        --retrieve LSB data from command 3
+          busy_cnt := 0;                               --reset busy_cnt for next transaction
+          state <= output_result;                      --advance to output the result
+          END IF;
 
             WHEN OTHERS => NULL;
           END CASE;
 
         --output the val data
-        WHEN output_result =>
+        WHEN output_result => 
           val <= temp_data(15 DOWNTO 0);       --write val data to output
           state <= pause;                              --pause 1.3us before next transaction
 

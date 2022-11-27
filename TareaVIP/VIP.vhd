@@ -9,6 +9,7 @@ USE ieee.std_logic_unsigned.ALL;
 ENTITY VIP IS
     PORT (
         CLK         : IN STD_LOGIC;
+        ch          : IN STD_LOGIC; 
         SCL, SDA    :  INOUT STD_LOGIC;
         i2c_ack_err : OUT STD_LOGIC;
         reset_n     : IN STD_LOGIC;
@@ -29,6 +30,7 @@ BEGIN
         SCL => SCL,
         SDA => SDA,
         clk => clk, --reloj 50 mhz
+        ch => ch,
         reset_n => reset_n, --reset asincrono
         i2c_ack_err => i2c_ack_err,
         Val => Valor_temporal --trama de 16 bits
