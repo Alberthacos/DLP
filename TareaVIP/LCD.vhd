@@ -4,27 +4,34 @@
 --P=45.455w F=23Hz
 LIBRARY ieee;
 USE ieee.std_logic_1164.ALL;
-USE ieee.std_logic_arith.ALL;
+--USE ieee.std_logic_arith.ALL;
 USE ieee.std_logic_unsigned.ALL;
+USE IEEE.numeric_std.ALL;
 
 ENTITY LCD IS
     PORT (
         CLOCK : IN STD_LOGIC;
-        =
+        LEDS : OUT STD_LOGIC_VECTOR(15 DOWNTO 0);
         LCD_RS : OUT STD_LOGIC := '0'; --	Comando, escritura
         LCD_RW : OUT STD_LOGIC; -- LECTURA/ESCRITURA
         LCD_E : OUT STD_LOGIC; -- ENABLE
+        REINI : IN STD_LOGIC;
         DATA : OUT STD_LOGIC_VECTOR(7 DOWNTO 0) := "00000000"; -- PINES DATOS
+
+        Valor_temporalV, Valor_temporalI : IN STD_LOGIC_VECTOR(15 DOWNTO 0)
+
+        --UniI, DeciI, CenI, MileI : IN STD_LOGIC_VECTOR(7 DOWNTO 0)
 
     );
 END LCD;
 
-ARCHITECTURE Behavioral OF LCD IS
+ARCHITECTURE ConrtlLCD OF LCD IS
     -----SIGNALS FOR LCD---------------
     -- signal FSM --
     TYPE STATE_TYPE IS (
-        RST, ST0, ST1, ST2, SET_DEFI, SHOW1, SHOW2, CLEAR, ENTRY, C, AA, L, M, O, E, T, R, N, I, S, X, BB, J,
-        desplazamiento, Vacio, CambioFila, decen, unid, limpiarlCD, espacio, dos_puntos, D, Z);
+        RST, ST0, ST1, ST2, SET_DEFI, SHOW1, SHOW2, CLEAR, ENTRY, C, unidadesF, L, M, O, E, T, R, N, S, X, BB, J,
+        desplazamiento, Vacio, CambioFila, decen, unid, limpiarlCD, espacio, dos_puntos, D, Z, V, I, igual, unidadesI, decenasP, decenasV, unidadesV,
+        punto_decimal, decimasV, decimasI, milesimasI, milesimasP, decenasF, decimasP, P, F, centecimasI, centecimasP, unidadesP);
     SIGNAL State, Next_State : STATE_TYPE;
 
     SIGNAL CONT1 : STD_LOGIC_VECTOR(23 DOWNTO 0) := X"000000"; -- 16,777,216 = 0.33554432 s MAX
@@ -33,13 +40,25 @@ ARCHITECTURE Behavioral OF LCD IS
     SIGNAL READY : STD_LOGIC := '0';
     SIGNAL listo : STD_LOGIC := '0';
     SIGNAL unidades, decenas : INTEGER RANGE 0 TO 9 := 0;
+    SIGNAL ValorDecV, ValorUniV, ValorDeciV : STD_LOGIC_VECTOR(7 DOWNTO 0);
+    SIGNAL ValorUniI, ValorDeciI, ValorCenI, ValorMileI : STD_LOGIC_VECTOR(7 DOWNTO 0);
+    SIGNAL ValorUniP, ValorDecP, ValorDeciP, ValorCenP, ValorMileP : STD_LOGIC_VECTOR(7 DOWNTO 0);
+    SIGNAL SAL_250us : STD_LOGIC;
+    SIGNAL contadors : INTEGER RANGE 1 TO 1_000_000 := 1; -- pulso1 de 0.25ms (pro. divisor ánodos)
+    SIGNAL VoI, VoV, vin : INTEGER RANGE 0 TO 500;
+    SIGNAL NumeroBitsDecimalV, NumeroBitsDecimalI : INTEGER RANGE 0 TO 50_000_000;
+    SIGNAL DecV, UniV, DeciV : INTEGER RANGE 0 TO 20;
+    SIGNAL UniI, DeciI, CentI, MileI : INTEGER RANGE 0 TO 20;
+    SIGNAL UniP, DecP, DeciP, CentP, MileP, IVal : INTEGER RANGE 0 TO 20;
+
     --signal LCD_numeros_Encoder
     SIGNAL numeroD, numeroU : STD_LOGIC_VECTOR(7 DOWNTO 0);
-    SIGNAL As, Es, Ls, Cs, M_s, Rs, Espacios, Oos, Iss, Ts, SS, Js : INTEGER RANGE 0 TO 20 := 1;
+    SIGNAL As, Es, Ls, Cs, M_s, Rs, Espacios, Oos, Iss, Ts, SS, Js, eqls, puntos : INTEGER RANGE 0 TO 20 := 1;
 
     ------------------------------------------------
 
 BEGIN
+
     -------------------------------------------------------------------
     --Contador de Retardos CONT1--
     PROCESS (CLOCK, RESET)
@@ -72,14 +91,12 @@ BEGIN
     END PROCESS;
     ------------------------------------------------------------------
 
-    PROCESS (CONT1, CONT2, State, CLOCK, REINI, listo, E_direccion, direccion1, numeros_encoder)
+    PROCESS (CONT1, CONT2, State, CLOCK, REINI, listo, UniV, ValorUniV)
     BEGIN
-
         IF REINI = '1' THEN
             Next_State <= RST;
         ELSIF CLOCK = '0' AND CLOCK'event THEN
             CASE State IS
-
                     --------------------------------------------------------------------------------
                 WHEN RST => -- Estado de reset
                     IF CONT1 = X"000000"THEN --0s
@@ -108,6 +125,7 @@ BEGIN
                     ELSE
                         Next_State <= ST0;
                     END IF;
+
                     RESET <= CONT2(0)AND CONT2(1)AND CONT2(2)AND CONT2(3); -- CONT1 = 0
 
                     --------------------------------------------------------------------------------			
@@ -208,6 +226,8 @@ BEGIN
                         Ss <= 1;
                         Js <= 1;
                         Espacios <= 1;
+                        eqls <= 1;
+                        puntos <= 1;
 
                         --As, Es, Ls, Cs, M_s, Rs, Espacios, Oos, Iss, Ts, SS, Js
                     ELSE
@@ -245,11 +265,8 @@ BEGIN
                         READY <= '0';
                         LCD_E <= '0';
                         LCD_RS <= '1'; --datos
-                        IF E_direccion = '0' AND numeros_encoder = '1' THEN --Numeros controlados con encoder
-                            Next_State <= C;--Contador
-                        ELSIF ((E_direccion = numeros_encoder) OR (E_direccion = '1' AND numeros_encoder = '0')) AND listo = '0' THEN
-                            Next_State <= AA; --Alexis
-                        END IF;
+                        Next_State <= V;--V de voltaje
+
                     ELSE
                         Next_State <= SHOW2;
                     END IF;
@@ -259,16 +276,16 @@ BEGIN
                 WHEN V => --Letra V (voltaje)
                     IF CONT1 = X"0009C4" THEN --espera por 50us 20ns*2500=50us 2500=9C4
                         READY <= '1';
-                        DATA <= "01000001"; -- V
-                        Next_State <= AA;
+                        DATA <= "01010110"; -- V
+                        Next_State <= V;
+
                     ELSIF CONT2 > "00001" AND CONT2 < "01110" THEN --rango de 12*20ns=240ns
                         LCD_E <= '1';
                     ELSIF CONT2 = "1111" THEN
                         READY <= '0';
                         LCD_E <= '0';
-
                         Next_State <= igual;
-
+                        LCD_RS <= '1'; --datos
                     ELSE
                         Next_State <= V;
                     END IF;
@@ -277,7 +294,7 @@ BEGIN
                 WHEN igual => -- signo igual =
                     IF CONT1 = X"0009C4" THEN --espera por 50us 20ns*2500=50us 2500=9C4
                         READY <= '1';
-                        DATA <= "01000001"; -- signo igual = 
+                        DATA <= "00111101"; -- signo igual = 
                         Next_State <= igual;
                     ELSIF CONT2 > "00001" AND CONT2 < "01110" THEN --rango de 12*20ns=240ns
                         LCD_E <= '1';
@@ -305,7 +322,7 @@ BEGIN
                 WHEN decenasV => --Decenas del voltaje
                     IF CONT1 = X"0009C4" THEN --espera por 50ms 20ns*25,000,000=50ms 2500=9C4
                         READY <= '1';
-                        DATA <= numeroD; -- RECIBE NUMERO CORRESPONDIENTE A DECENAS del voltaje
+                        DATA <= ValorDecV; -- RECIBE NUMERO CORRESPONDIENTE A DECENAS del voltaje
                         Next_State <= decenasV;
 
                     ELSIF CONT2 > "00001" AND CONT2 < "01110" THEN --rango de 12*20ns=240ns
@@ -323,15 +340,14 @@ BEGIN
                 WHEN unidadesV => --UNIDADES del voltaje
                     IF CONT1 = X"0009C4" THEN --espera por 500ms 20ns*25,000,000=50ms 2500=9C4
                         READY <= '1';
-                        DATA <= numeroU; -- RECIBE NUMERO CORRESPONDIENTE A DECENAS del voltaje
+                        DATA <= ValorUniV; -- RECIBE NUMERO CORRESPONDIENTE A DECENAS del voltaje
                         Next_State <= unidadesV;
-
                     ELSIF CONT2 > "00001" AND CONT2 < "01110" THEN --rango de 12*20ns=240ns
                         LCD_E <= '1';
                     ELSIF CONT2 = "1111" THEN
                         READY <= '0';
                         LCD_E <= '0';
-                        next_state <= Espacio;
+                        next_state <= punto_decimal; --cambio antes estaba espacio 
                     ELSE
                         Next_State <= unidadesV;
                     END IF;
@@ -341,7 +357,7 @@ BEGIN
                 WHEN punto_decimal => --Punto decimal
                     IF CONT1 = X"0009C4" THEN --espera por 500ms 20ns*25,000,000=50ms 2500=9C4
                         READY <= '1';
-                        DATA <= ""; -- punto decimal
+                        DATA <= "00101110"; -- punto decimal
                         Next_State <= punto_decimal;
                     ELSIF CONT2 > "00001" AND CONT2 < "01110" THEN --rango de 12*20ns=240ns
                         LCD_E <= '1';
@@ -367,7 +383,7 @@ BEGIN
                 WHEN decimasV => --decimas del voltaje
                     IF CONT1 = X"0009C4" THEN --espera por 500ms 20ns*25,000,000=50ms 2500=9C4
                         READY <= '1';
-                        DATA <= decimas; -- RECIBE NUMERO CORRESPONDIENTE A DECENAS del voltaje
+                        DATA <= ValorDeciV; -- RECIBE NUMERO CORRESPONDIENTE A DECENAS del voltaje
                         Next_State <= decimasV;
                     ELSIF CONT2 > "00001" AND CONT2 < "01110" THEN --rango de 12*20ns=240ns
                         LCD_E <= '1';
@@ -409,7 +425,7 @@ BEGIN
 
                     --------------------------------------------------------------------------------
                 WHEN I => --I (corriente)
-                -- // signo igual
+                    -- // signo igual
                     IF CONT1 = X"0009C4" THEN --espera por 50us 20ns*2500=50us 2500=9C4
                         READY <= '1';
                         DATA <= "01001001"; -- letra I mayuscula
@@ -427,10 +443,10 @@ BEGIN
 
                     --------------------------------------------------------------------------------
                 WHEN unidadesI => --unidadesI 
-                --// punto decimal
+                    --// punto decimal
                     IF CONT1 = X"0009C4" THEN --espera por 50us 20ns*2500=50us 2500=9C4
                         READY <= '1';
-                        DATA <= ""; -- valor numerico de las unidades de la I
+                        DATA <= ValorUniI; -- valor numerico de las unidades de la I
                         Next_State <= unidadesI;
                     ELSIF CONT2 > "00001" AND CONT2 < "01110" THEN --rango de 12*20ns=240ns
                         LCD_E <= '1';
@@ -447,7 +463,7 @@ BEGIN
                 WHEN decimasI => --decimasI 
                     IF CONT1 = X"0009C4" THEN --espera por 50us 20ns*2500=50us 2500=9C4
                         READY <= '1';
-                        DATA <= ""; -- valor numerico de las decimas de la corriente I
+                        DATA <= ValorDeciI; -- valor numerico de las decimas de la corriente I
                         Next_State <= decimasI;
                     ELSIF CONT2 > "00001" AND CONT2 < "01110" THEN --rango de 12*20ns=240ns
                         LCD_E <= '1';
@@ -464,7 +480,7 @@ BEGIN
                 WHEN centecimasI => --centecimasI 
                     IF CONT1 = X"0009C4" THEN --espera por 50us 20ns*2500=50us 2500=9C4
                         READY <= '1';
-                        DATA <= ""; -- valor numerico de las centecimas de la corriente I
+                        DATA <= ValorCenI; -- valor numerico de las centecimas de la corriente I
                         Next_State <= centecimasI;
                     ELSIF CONT2 > "00001" AND CONT2 < "01110" THEN --rango de 12*20ns=240ns
                         LCD_E <= '1';
@@ -481,15 +497,15 @@ BEGIN
                 WHEN milesimasI => --milesimasI 
                     IF CONT1 = X"0009C4" THEN --espera por 50us 20ns*2500=50us 2500=9C4
                         READY <= '1';
-                        DATA <= ""; -- valor numerico de las milesimas de la corriente I
+                        DATA <= ValorMileI; -- valor numerico de las milesimas de la corriente I
                         Next_State <= milesimasI;
                     ELSIF CONT2 > "00001" AND CONT2 < "01110" THEN --rango de 12*20ns=240ns
                         LCD_E <= '1';
                     ELSIF CONT2 = "1111" THEN
                         READY <= '0';
                         LCD_E <= '0';
-                        LCD_RS <= '0' --comandos
-                            Next_State <= CambioFila;
+                        LCD_RS <= '0'; --comandos
+                        Next_State <= CambioFila;
                     ELSE
                         Next_State <= milesimasI;
                     END IF;
@@ -515,10 +531,10 @@ BEGIN
 
                     --------------------------------------------------------------------------------
                 WHEN P => --P (potencia) 
-                --// signo igual 
+                    --// signo igual 
                     IF CONT1 = X"0009C4" THEN --espera por 50us 20ns*2500=50us 2500=9C4
                         READY <= '1';
-                        DATA <= ""; -- P
+                        DATA <= "01010000"; -- P
                         Next_State <= P;
                     ELSIF CONT2 > "00001" AND CONT2 < "01110" THEN --rango de 12*20ns=240ns
                         LCD_E <= '1';
@@ -536,7 +552,7 @@ BEGIN
                 WHEN decenasP => --decenasP 
                     IF CONT1 = X"0009C4" THEN --espera por 50us 20ns*2500=50us 2500=9C4
                         READY <= '1';
-                        DATA <= ""; -- valor numerico de las decenas de la potencia P 
+                        DATA <= ValorDecP; -- valor numerico de las decenas de la potencia P 
                         Next_State <= decenasP;
                     ELSIF CONT2 > "00001" AND CONT2 < "01110" THEN --rango de 12*20ns=240ns
                         LCD_E <= '1';
@@ -552,10 +568,10 @@ BEGIN
 
                     --------------------------------------------------------------------------------
                 WHEN unidadesP => --unidadesP 
-                --// punto decimal
+                    --// punto decimal
                     IF CONT1 = X"0009C4" THEN --espera por 50us 20ns*2500=50us 2500=9C4
                         READY <= '1';
-                        DATA <= ""; -- valor numerico de las unidades de la potencia P
+                        DATA <= ValorUniP; -- valor numerico de las unidades de la potencia P
                         Next_State <= unidadesP;
                     ELSIF CONT2 > "00001" AND CONT2 < "01110" THEN --rango de 12*20ns=240ns
                         LCD_E <= '1';
@@ -572,7 +588,7 @@ BEGIN
                 WHEN decimasP => --decimasP 
                     IF CONT1 = X"0009C4" THEN --espera por 50us 20ns*2500=50us 2500=9C4
                         READY <= '1';
-                        DATA <= ""; -- valor numerico de las decimas de la potencia P
+                        DATA <= ValorDeciP; -- valor numerico de las decimas de la potencia P
                         Next_State <= decimasP;
                     ELSIF CONT2 > "00001" AND CONT2 < "01110" THEN --rango de 12*20ns=240ns
                         LCD_E <= '1';
@@ -589,7 +605,7 @@ BEGIN
                 WHEN centecimasP => --centecimasP 
                     IF CONT1 = X"0009C4" THEN --espera por 50us 20ns*2500=50us 2500=9C4
                         READY <= '1';
-                        DATA <= ""; -- valor numerico de las centecimas de la potenciaP
+                        DATA <= ValorCenP; -- valor numerico de las centecimas de la potenciaP
                         Next_State <= centecimasP;
                     ELSIF CONT2 > "00001" AND CONT2 < "01110" THEN --rango de 12*20ns=240ns
                         LCD_E <= '1';
@@ -606,15 +622,15 @@ BEGIN
                 WHEN milesimasP => --milesimasP 
                     IF CONT1 = X"0009C4" THEN --espera por 50us 20ns*2500=50us 2500=9C4
                         READY <= '1';
-                        DATA <= ""; -- valor numerico de las milesimas de la potencia P
+                        DATA <= ValorMileP; -- valor numerico de las milesimas de la potencia P
                         Next_State <= milesimasP;
                     ELSIF CONT2 > "00001" AND CONT2 < "01110" THEN --rango de 12*20ns=240ns
                         LCD_E <= '1';
                     ELSIF CONT2 = "1111" THEN
                         READY <= '0';
                         LCD_E <= '0';
-                        LCD_RS <= '0' --comandos
-                            Next_State <= Espacio;
+                        LCD_RS <= '0'; --comandos
+                        Next_State <= Espacio;
                     ELSE
                         Next_State <= milesimasP;
                     END IF;
@@ -622,10 +638,10 @@ BEGIN
 
                     --------------------------------------------------------------------------------
                 WHEN F => --F (frecuencia) 
-                --// signo igual
+                    --// signo igual
                     IF CONT1 = X"0009C4" THEN --espera por 50us 20ns*2500=50us 2500=9C4
                         READY <= '1';
-                        DATA <= ""; -- F mayuscula
+                        DATA <= "01000110"; -- F mayuscula
                         Next_State <= F;
                     ELSIF CONT2 > "00001" AND CONT2 < "01110" THEN --rango de 12*20ns=240ns
                         LCD_E <= '1';
@@ -643,7 +659,7 @@ BEGIN
                 WHEN decenasF => --decenasF
                     IF CONT1 = X"0009C4" THEN --espera por 50us 20ns*2500=50us 2500=9C4
                         READY <= '1';
-                        DATA <= ""; -- valor numerico de las decenas de la frecuencia F 
+                        DATA <= "00000000"; -- valor numerico de las decenas de la frecuencia F 
                         Next_State <= decenasF;
                     ELSIF CONT2 > "00001" AND CONT2 < "01110" THEN --rango de 12*20ns=240ns
                         LCD_E <= '1';
@@ -661,17 +677,256 @@ BEGIN
                 WHEN unidadesF => --unidadesF 
                     IF CONT1 = X"0009C4" THEN --espera por 50us 20ns*2500=50us 2500=9C4
                         READY <= '1';
-                        DATA <= ""; -- valor numerico de las unidades de la frecuencia F
+                        DATA <= "00000000"; -- valor numerico de las unidades de la frecuencia F
                         Next_State <= unidadesF;
                     ELSIF CONT2 > "00001" AND CONT2 < "01110" THEN --rango de 12*20ns=240ns
                         LCD_E <= '1';
                     ELSIF CONT2 = "1111" THEN
                         READY <= '0';
                         LCD_E <= '0';
-                        Next_State <= vacio; --///////////////FIN 
+                        Next_State <= CLEAR; --///////////////FIN 
                     ELSE
                         Next_State <= unidadesF;
                     END IF;
                     RESET <= CONT2(0)AND CONT2(1)AND CONT2(2)AND CONT2(3); -- CONT1 = 0
+                WHEN OTHERS => READY <= '0';
+                    LCD_E <= '0';
+                    LCD_RS <= '0';
+            END CASE;
+        END IF;
+    END PROCESS;
 
-            END ARCHITECTURE Behavioral;
+    --------------------------------------------------------------------------------
+    -- ----
+    --------------------------------------------------------------------------------
+
+    ---------------------DIVISOR ÁNODOS-------------------
+    PROCESS (CLocK) BEGIN
+        IF rising_edge(CLocK) THEN
+            IF (contadors = 1_000_000) THEN --cuenta 0.125ms (50MHz=6250)
+                -- if (contadors = 12500) then --cuenta 0.125ms (100MHz=12500)
+                SAL_250us <= NOT(SAL_250us); --genera un barrido de 0.25ms
+                contadors <= 1;
+            ELSE
+                contadors <= contadors + 1;
+            END IF;
+        END IF;
+    END PROCESS; -- fin del proceso Divisor Ánodos
+
+    --------------------------------------------------------------------------------
+    PROCESS (SAL_250us)
+    BEGIN
+        IF rising_edge(SAL_250us) THEN
+
+            --OPERACIONES VOLTAJE
+            NumeroBitsDecimalV <= TO_INTEGER(UNSIGNED(Valor_temporalV(14 DOWNTO 0)));
+
+            --IF ch = '0' THEN --hace operaciones para voltaje 
+            VoV <= ((NumeroBitsDecimalV * 5060)/538400);--2687900
+            -- Vo <= ((TO_INTEGER(UNSIGNED(Valor_temporalV(14 DOWNTO 0))) * 5060)/538400);
+            --Vin <= (Vo*(7500+30_000))/7500;
+            DecV <= VoV/100; --Decimas Voltaje  decmil
+            UniV <= (voV - DecV * 100)/10; --Unidades voltaje mil
+            DeciV <= (VoV - DecV * 100 - UniV * 10); --decimas voltaje  cen
+
+            --OPERACIONES CORRIENTE
+            NumeroBitsDecimalI <= TO_INTEGER(UNSIGNED(Valor_temporalI(14 DOWNTO 0)));--(decMIL * 10000) + (MIL * 1000) + (CEN * 100) + (DEC * 10) + UNI;
+            
+            VoI <= ((NumeroBitsDecimalI * 50_600_000)/2687900); -- Vo <= ((NumeroBitsDecimal * 916_000)/1346200000);
+            IVal <= ((VoI - 250_000)/10);
+            UniI <= IVal/1000;
+            DeciI <= (IVal-UniI*1000)/100; --millar [A] enteros
+            CentI <= (IVal-UniI*1000-DeciI*100)/10; --centecimas
+            MileI <= (IVal-UniI*1000-DeciI*100-CentI*10); --decenas
+
+
+
+            --Operaciones potencia 
+            
+            UniP <= (VoV*Ival)/10_000;
+            DecP <= ((VoV*Ival)-UniP*10_000)/1000;
+            DeciP <= ((VoV*Ival)-UniP*10_00-DecP*1000)/100;
+            CentP <= ((VoV*Ival)-UniP*10_00-DecP*1000-DeciP*100)/10;
+            MileP <= ((VoV*Ival)-UniP*10_00-DecP*1000-CentP*10);
+
+        END IF;
+        --VOLTAJE
+        CASE(DecV) IS -- abcdefgP 
+            WHEN 0 => ValorDecV <= "00110000"; --0 
+            WHEN 1 => ValorDecV <= "00110001"; --1
+            WHEN 2 => ValorDecV <= "00110010"; --2
+            WHEN 3 => ValorDecV <= "00110011"; --3
+            WHEN 4 => ValorDecV <= "00110100"; --4
+            WHEN 5 => ValorDecV <= "00110101"; --5
+            WHEN 6 => ValorDecV <= "00110110"; --6
+            WHEN 7 => ValorDecV <= "00110111"; --7
+            WHEN 8 => ValorDecV <= "00111000"; --8
+            WHEN 9 => ValorDecV <= "00111001"; --9
+            WHEN OTHERS => ValorDecV <= "00000000"; --apagado
+        END CASE;
+
+        CASE(UniV) IS -- abcdefgP
+            WHEN 0 => ValorUniV <= "00110000"; --0 
+            WHEN 1 => ValorUniV <= "00110001"; --1
+            WHEN 2 => ValorUniV <= "00110010"; --2
+            WHEN 3 => ValorUniV <= "00110011"; --3
+            WHEN 4 => ValorUniV <= "00110100"; --4
+            WHEN 5 => ValorUniV <= "00110101"; --5
+            WHEN 6 => ValorUniV <= "00110110"; --6
+            WHEN 7 => ValorUniV <= "00110111"; --7
+            WHEN 8 => ValorUniV <= "00111000"; --8
+            WHEN 9 => ValorUniV <= "00111001"; --9
+            WHEN OTHERS => ValorUniV <= "00000000"; --apagado
+        END CASE;
+
+        CASE(DeciV) IS -- abcdefgP
+            WHEN 0 => ValorDeciV <= "00110000"; --0 
+            WHEN 1 => ValorDeciV <= "00110001"; --1
+            WHEN 2 => ValorDeciV <= "00110010"; --2
+            WHEN 3 => ValorDeciV <= "00110011"; --3
+            WHEN 4 => ValorDeciV <= "00110100"; --4
+            WHEN 5 => ValorDeciV <= "00110101"; --5
+            WHEN 6 => ValorDeciV <= "00110110"; --6
+            WHEN 7 => ValorDeciV <= "00110111"; --7
+            WHEN 8 => ValorDeciV <= "00111000"; --8
+            WHEN 9 => ValorDeciV <= "00111001"; --9
+            WHEN OTHERS => ValorDeciV <= ValorDeciV; --apagado
+        END CASE;
+        --------------------------------------------------------------------------------
+        -- ASIGNACION VALORES ASCII PARA POTENCIA
+        --------------------------------------------------------------------------------
+        --POTENCIA
+        CASE(UniP) IS -- abcdefgP 
+            WHEN 0 => ValorUniP <= "00110000"; --0 
+            WHEN 1 => ValorUniP <= "00110001"; --1
+            WHEN 2 => ValorUniP <= "00110010"; --2
+            WHEN 3 => ValorUniP <= "00110011"; --3
+            WHEN 4 => ValorUniP <= "00110100"; --4
+            WHEN 5 => ValorUniP <= "00110101"; --5
+            WHEN 6 => ValorUniP <= "00110110"; --6
+            WHEN 7 => ValorUniP <= "00110111"; --7
+            WHEN 8 => ValorUniP <= "00111000"; --8
+            WHEN 9 => ValorUniP <= "00111001"; --9
+            WHEN OTHERS => ValorUniP <= ValorUniP; --apagado
+        END CASE;
+
+        CASE(DecP) IS -- abcdefgP
+            WHEN 0 => ValorDecP <= "00110000"; --0 
+            WHEN 1 => ValorDecP <= "00110001"; --1
+            WHEN 2 => ValorDecP <= "00110010"; --2
+            WHEN 3 => ValorDecP <= "00110011"; --3
+            WHEN 4 => ValorDecP <= "00110100"; --4
+            WHEN 5 => ValorDecP <= "00110101"; --5
+            WHEN 6 => ValorDecP <= "00110110"; --6
+            WHEN 7 => ValorDecP <= "00110111"; --7
+            WHEN 8 => ValorDecP <= "00111000"; --8
+            WHEN 9 => ValorDecP <= "00111001"; --9
+            WHEN OTHERS => ValorDecP <= ValorDecP; --apagado
+        END CASE;
+
+        CASE(DeciP) IS -- abcdefgP
+            WHEN 0 => ValorDeciP <= "00110000"; --0 
+            WHEN 1 => ValorDeciP <= "00110001"; --1
+            WHEN 2 => ValorDeciP <= "00110010"; --2
+            WHEN 3 => ValorDeciP <= "00110011"; --3
+            WHEN 4 => ValorDeciP <= "00110100"; --4
+            WHEN 5 => ValorDeciP <= "00110101"; --5
+            WHEN 6 => ValorDeciP <= "00110110"; --6
+            WHEN 7 => ValorDeciP <= "00110111"; --7
+            WHEN 8 => ValorDeciP <= "00111000"; --8
+            WHEN 9 => ValorDeciP <= "00111001"; --9
+            WHEN OTHERS => ValorDeciP <= ValorDeciP; --apagado
+        END CASE;
+
+        CASE(CentP) IS -- abcdefgP
+            WHEN 0 => ValorCenP <= "00110000"; --0 
+            WHEN 1 => ValorCenP <= "00110001"; --1
+            WHEN 2 => ValorCenP <= "00110010"; --2
+            WHEN 3 => ValorCenP <= "00110011"; --3
+            WHEN 4 => ValorCenP <= "00110100"; --4
+            WHEN 5 => ValorCenP <= "00110101"; --5
+            WHEN 6 => ValorCenP <= "00110110"; --6
+            WHEN 7 => ValorCenP <= "00110111"; --7
+            WHEN 8 => ValorCenP <= "00111000"; --8
+            WHEN 9 => ValorCenP <= "00111001"; --9
+            WHEN OTHERS => ValorCenP <= ValorCenP; --apagado
+        END CASE;
+
+        CASE(MileP) IS -- abcdefgP
+            WHEN 0 => ValorMileP <= "00110000"; --0 
+            WHEN 1 => ValorMileP <= "00110001"; --1
+            WHEN 2 => ValorMileP <= "00110010"; --2
+            WHEN 3 => ValorMileP <= "00110011"; --3
+            WHEN 4 => ValorMileP <= "00110100"; --4
+            WHEN 5 => ValorMileP <= "00110101"; --5
+            WHEN 6 => ValorMileP <= "00110110"; --6
+            WHEN 7 => ValorMileP <= "00110111"; --7
+            WHEN 8 => ValorMileP <= "00111000"; --8
+            WHEN 9 => ValorMileP <= "00111001"; --9
+            WHEN OTHERS => ValorMileP <= ValorMileP; --apagado
+        END CASE;
+         --------------------------------------------------------------------------------
+        -- ASIGNACION VALORES ASCII PARA CORRIENTE
+        --------------------------------------------------------------------------------
+        --CORRIENTE
+        CASE(UniI) IS -- abcdefgP 
+        WHEN 0 => ValorUniI <= "00110000"; --0 
+        WHEN 1 => ValorUniI <= "00110001"; --1
+        WHEN 2 => ValorUniI <= "00110010"; --2
+        WHEN 3 => ValorUniI <= "00110011"; --3
+        WHEN 4 => ValorUniI <= "00110100"; --4
+        WHEN 5 => ValorUniI <= "00110101"; --5
+        WHEN 6 => ValorUniI <= "00110110"; --6
+        WHEN 7 => ValorUniI <= "00110111"; --7
+        WHEN 8 => ValorUniI <= "00111000"; --8
+        WHEN 9 => ValorUniI <= "00111001"; --9
+        WHEN OTHERS => ValorUniI <= "00110000"; --apagado
+    END CASE;
+
+    CASE(DeciI) IS -- abcdefgP
+        WHEN 0 => ValorDeciI <= "00110000"; --0 
+        WHEN 1 => ValorDeciI <= "00110001"; --1
+        WHEN 2 => ValorDeciI <= "00110010"; --2
+        WHEN 3 => ValorDeciI <= "00110011"; --3
+        WHEN 4 => ValorDeciI <= "00110100"; --4
+        WHEN 5 => ValorDeciI <= "00110101"; --5
+        WHEN 6 => ValorDeciI <= "00110110"; --6
+        WHEN 7 => ValorDeciI <= "00110111"; --7
+        WHEN 8 => ValorDeciI <= "00111000"; --8
+        WHEN 9 => ValorDeciI <= "00111001"; --9
+        WHEN OTHERS => ValorDeciI <= "00000000"; --apagado
+    END CASE;
+
+    CASE(CentI) IS -- abcdefgP
+        WHEN 0 => ValorCenI <= "00110000"; --0 
+        WHEN 1 => ValorCenI <= "00110001"; --1
+        WHEN 2 => ValorCenI <= "00110010"; --2
+        WHEN 3 => ValorCenI <= "00110011"; --3
+        WHEN 4 => ValorCenI <= "00110100"; --4
+        WHEN 5 => ValorCenI <= "00110101"; --5
+        WHEN 6 => ValorCenI <= "00110110"; --6
+        WHEN 7 => ValorCenI <= "00110111"; --7
+        WHEN 8 => ValorCenI <= "00111000"; --8
+        WHEN 9 => ValorCenI <= "00111001"; --9
+        WHEN OTHERS => ValorCenI <= ValorCenI; --apagado
+    END CASE;
+
+    CASE(MileI) IS -- abcdefgP
+        WHEN 0 => ValorMileI <= "00110000"; --0 
+        WHEN 1 => ValorMileI <= "00110001"; --1
+        WHEN 2 => ValorMileI <= "00110010"; --2
+        WHEN 3 => ValorMileI <= "00110011"; --3
+        WHEN 4 => ValorMileI <= "00110100"; --4
+        WHEN 5 => ValorMileI <= "00110101"; --5
+        WHEN 6 => ValorMileI <= "00110110"; --6
+        WHEN 7 => ValorMileI <= "00110111"; --7
+        WHEN 8 => ValorMileI <= "00111000"; --8
+        WHEN 9 => ValorMileI <= "00111001"; --9
+        WHEN OTHERS => ValorMileI <= ValorMileI; --apagado
+    END CASE;
+        
+        LEDS(15 DOWNTO 8) <= ValorDecV;
+        LEDS(7 DOWNTO 0) <= ValorUniV;--ValorUniV;
+    END PROCESS;
+
+END ConrtlLCD;
