@@ -27,7 +27,6 @@ ENTITY SpeedMotors IS
         M1, M2 : INOUT STD_LOGIC := '0'; --Salida PWM hacia los motores, salida a transistor
         SPK1_Min, SPK1_Max : OUT STD_LOGIC := '0'; --Salidas para sonido
         LedM1,LedM2 : OUT STD_LOGIC := '0'; 
-        
         RGB1, RGB2 : OUT STD_LOGIC_VECTOR(2 DOWNTO 0) --Salida a leds RGB que indican las velocidades
     );
 END ENTITY SpeedMotors;

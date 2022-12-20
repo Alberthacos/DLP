@@ -10,6 +10,7 @@ ENTITY VIP IS
     PORT (
         CLK         : IN STD_LOGIC;
         LEDS : OUT STD_LOGIC_VECTOR(15 DOWNTO 0);
+        Fre_input : IN STD_LOGIC;
         SCL, SDA    :  INOUT STD_LOGIC;
         i2c_ack_err : OUT STD_LOGIC;
         reset_n     : IN STD_LOGIC;
@@ -74,7 +75,7 @@ BEGIN
         LCD_RW => LCD_RW,
         LCD_E => LCD_E,
         LEDS => LEDS,
-
+        Fre_input => Fre_input,
 		REINI => REINI,
         --valores del voltaje
         Valor_temporalV => Valor_temporalV,
