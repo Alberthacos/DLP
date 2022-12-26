@@ -1,0 +1,15 @@
+[CACHESIMPLE|Aldec.SymbolsCommands.7]
+Built-in symbols=0
+maquinaestadosmotores=0
+[COMPILESTATUS|.\src\Estadosmotores.asf]
+FileTimeLow=2828814465
+FileTimeHigh=31004834
+Status=Compiled
+[COMPILESTATUS|.\compile\Estadosmotores.vhd]
+FileTimeLow=2835992436
+FileTimeHigh=31004834
+Status=Modified
+[General]
+CurrentVersion=103
+[CACHEDOC|Aldec.Project.Generic.7|.\maquinaestadosmotores.adf|]
+Path=

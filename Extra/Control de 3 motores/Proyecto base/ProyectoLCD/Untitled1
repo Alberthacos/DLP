@@ -1,0 +1,9 @@
+if fila = 1 then 
+Next_State<=CambioFila; 
+elsif fila = 2 then 
+Next_State<=Clear; 
+end if;	
+
+dir1 
+U
+P

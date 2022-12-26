@@ -1,0 +1,8 @@
+[Version]
+Version=13.0
+[Designs]
+maquinaestadosmotores=maquinaestadosmotores.adf
+[Settings]
+Active=maquinaestadosmotores
+[Expand]
+maquinaestadosmotores=1
