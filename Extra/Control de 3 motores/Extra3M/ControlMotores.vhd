@@ -44,7 +44,7 @@ ARCHITECTURE behavioral OF ControlM IS
 
 	SIGNAL Sreg0, NextState_Sreg0 : Sreg0_type;
 	SIGNAL EstadosMotores : STD_LOGIC_VECTOR(2 DOWNTO 0);
-	SIGNAL PWM_Count : INTEGER RANGE 0 TO 30_000_000 := 0;
+	SIGNAL PWM_Count : INTEGER RANGE 0 TO 20_000_000 := 0;
 	SIGNAL Ebeep : STD_LOGIC := '0';
 	CONSTANT LIMITE : INTEGER := 16_650_000;
 BEGIN
@@ -149,7 +149,7 @@ BEGIN
 			END IF;
 		ELSE
 			PWM_Count <= 0;
-			--BEEP <= '0';
+
 		END IF;
 	END PROCESS Sonido;
 	Rels <= EstadosMotores; --Salida a relevadores que controlan el encendido y apagado de los motores
