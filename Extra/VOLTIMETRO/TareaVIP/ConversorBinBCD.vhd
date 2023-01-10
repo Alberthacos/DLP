@@ -18,9 +18,6 @@ END binary_bcd;
 
 ARCHITECTURE behaviour OF binary_bcd IS
     --------------------------------------------------------------------------------
-    --SIGNAL contadors : INTEGER RANGE 1 TO 6250 := 1; -- pulso1 de 0.25ms (pro. divisor ánodos)
-    --SIGNAL contadors1 : INTEGER RANGE 1 TO 50_000_000 := 1; -- pulso de un segundo 
-
     -- Declaración de señales de la asignación de U-D-C-UM
     SIGNAL UNI, DEC, CEN, MIL, decMIL : INTEGER RANGE 0 TO 70_000_000; -- digitos unidades, decenas,millar, decenas millar
     SIGNAL vin : INTEGER RANGE 0 TO 100_000_000;
@@ -90,7 +87,7 @@ BEGIN
 
     PROCESS (SAL_250us1)
     BEGIN
-        IF SAL_250us1'event AND SAL_250us1 = '1' THEN
+        IF SAL_250us'event AND SAL_250us = '1' THEN
             --Conversion Bits a decimal 
             NumeroBitsDecimal <= TO_INTEGER(UNSIGNED(binary_in(14 DOWNTO 0)));
             --Calculo de voltaje, relacion voltaje - bits
@@ -108,29 +105,6 @@ BEGIN
             Dec <= (Vdisp - DecMil * 1000 - MIL * 100 - Cen * 10); --decenas
             Uni <= 0; --unidades
 
-            --		  --FUNCIONA REGULAR
-            --        Vo <= ((NumeroBitsDecimal * 5063)/53840);
-            --        DecMIL <=Vo/1000; --decimas de millar
-            --        MIL <= (vo-DecMil*1000)/100; --millar
-            --        Cen <= (Vo-DecMil*1000-MIL*100)/10;  ---centenas
-            --        Dec <= (Vo-DecMil*1000-MIL*100-Cen*10); --decenas
-            --        Uni <= 0;    --unidades
-            --------------------------------------------------------------------------------
-            --Vin <=(NumeroBitsDecimal*(9396+(6741/100_000))); 
-            --
-            --DecMIL<=Vin/100_000_000;--(NumeroBitsDecimal*1875*633)/1255000000; --decimas de millar
-            --MIL <=(Vin-DecMil*100_000_000)/10_000_000; --millar0
-            --Cen <=(Vin-DecMil*100_000_000-MIL*10_000_000)/1000_000;  ---centenas
-            --Dec <=(Vin-DecMil*100_000_000-MIL*10_000_000-Cen*1000_000)/100_000; --decenas
-            --Uni <= 0;    --unidades
-
-            --		  --FUNCIONA REGULAR
-            --        Vo <= ((NumeroBitsDecimal * 5063)/53840);
-            --        DecMIL <=Vo/1000; --decimas de millar
-            --        MIL <= (vo-DecMil*1000)/100; --millar
-            --        Cen <= (Vo-DecMil*1000-MIL*100)/10;  ---centenas
-            --        Dec <= (Vo-DecMil*1000-MIL*100-Cen*10); --decenas
-            --        Uni <= 0;    --unidades
         END IF;
     END PROCESS;
 END behaviour;

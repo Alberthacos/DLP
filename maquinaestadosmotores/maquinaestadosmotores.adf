@@ -26,3 +26,7 @@ UCF=
 .\src\Estadosmotores.asf=State Diagram
 [file_out:/Estadosmotores.asf]
 /..\compile\Estadosmotores.vhd=-1
+[HierarchyViewer]
+HierarchyInformation=
+ShowHide=ShowTopLevel
+Selected=

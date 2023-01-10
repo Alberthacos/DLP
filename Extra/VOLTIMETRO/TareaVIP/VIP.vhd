@@ -30,21 +30,21 @@ BEGIN
         SDA => SDA,
         clk => clk, --reloj 50 mhz
         reset_n => reset_n, --reset asincrono
-        i2c_ack_err => i2c_ack_err,
+        i2c_ack_err => i2c_ack_err, --Led indicador de error en comunicacion i2c
         Val => Valor_temporal --trama de 16 bits
         );
     --------------------------------------------------------------------------------
 
     --------------------------------------------------------------------------------
-    --Declaracion del convertirdor binario a decimal con salida a display 7 segmentos 
+    --Declaracion del convertidor binario a decimal y realiza las operaciones necesarias
     convertidor : ENTITY WORK.binary_bcd PORT MAP(
         clk => clk,
         reset_n => reset_n, --reset asincrono
         binary_in => Valor_temporal, --trama de 16 bits (entrada) para convertir a decimal 
         DISPLAY => DISPLAY, --segmentos
-		  HLD => HLD,
-        SAL_250us => SAL_250us,
-        SAL_250us1 => SAL_250us1,
+		  HLD => HLD, --Boton hold
+        SAL_250us => SAL_250us, --Pulso para display 7 segmentos
+        SAL_250us1 => SAL_250us1, --Pulso de un segundo 
         AN => AN --anodos
         );
     --------------------------------------------------------------------------------

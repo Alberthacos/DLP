@@ -1,0 +1,13 @@
+open -fsm {C:\Users\amf01\Documents\DLP\maquinaestadosmotores\src\Estadosmotores.asf}
+# Preparing list of files to export. Please wait...
+# Finished preparing list of files to export.
+# Exporting single document to pdf...
+# Destination folder is [C:\Users\amf01\Documents\DLP\maquinaestadosmotores\pdf\]
+# Exporting C:\Users\amf01\Documents\DLP\maquinaestadosmotores\src\Estadosmotores.asf (1 of 2)
+# Exporting state diagram [C:\Users\amf01\Documents\DLP\maquinaestadosmotores\src\Estadosmotores.asf]...
+# State diagram [C:\Users\amf01\Documents\DLP\maquinaestadosmotores\src\Estadosmotores.asf] has been exported successfully.
+# Exporting C:\Users\amf01\Documents\DLP\maquinaestadosmotores\compile\Estadosmotores.vhd (2 of 2)
+# Exporting HDE document [C:\Users\amf01\Documents\DLP\maquinaestadosmotores\compile\Estadosmotores.vhd] ...
+# HDE document [Estadosmotores.vhd] exported successfully
+# Export to PDF time: [1 s]
+# Exported PDF file: C:\Users\amf01\Documents\DLP\maquinaestadosmotores\pdf\Estadosmotores.pdf

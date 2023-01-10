@@ -477,7 +477,7 @@ BEGIN
                     RESET <= CONT2(0)AND CONT2(1)AND CONT2(2)AND CONT2(3); -- CONT1 = 0
 
                 WHEN tres => --NUMERO 3
-                    IF CONT1 = X"0009C4" THEN --espera por 50us 20ns*2500=50us 2500=9C4
+                    IF CONT1 = "00110011" THEN --espera por 50us 20ns*2500=50us 2500=9C4
                         READY <= '1';
                         DATA <= "00110010"; -- numero tres
                         Next_State <= tres;

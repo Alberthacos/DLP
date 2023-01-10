@@ -23,7 +23,7 @@ BEGIN
     PROCESS (CLK) BEGIN
         IF rising_edge(CLK) THEN
             IF (contadors = 6250) THEN --cuenta 0.125ms (50MHz=6250) 20us*6250=0.125ms ????????????????????????????
-                SAL_250us <= NOT(SAL_250us); --genera un barrido de 0.25ms
+                SAL_250us <= NOT(SAL_250us); --genera un barrido de 0.125ms
                 contadors <= 1;
             ELSE
                 contadors <= contadors + 1;

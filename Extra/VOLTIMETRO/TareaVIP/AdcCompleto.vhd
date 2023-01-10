@@ -96,7 +96,6 @@ BEGIN
             WHEN 1 => 
                 i2c_data_wr <= "11000000";   --config bits 15-8                --send the address (x03) of the Configuration Register, reg conversion
                   --(15-OS// 14-12 multiplexor // 11-9 ganancia // 8 modo operacion )
-          
             WHEN 2 => 
               i2c_data_wr <= "00000011";   --config bits 7-0                --send the address (x03) of the Configuration Register, reg conversion
             WHEN 3 =>                                    --2nd busy high: command 2 latched

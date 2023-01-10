@@ -9,7 +9,7 @@ LIBRARY IEEE;
 USE IEEE.std_logic_1164.ALL;
 USE IEEE.std_logic_arith.ALL;
 USE IEEE.std_logic_unsigned.ALL;
-USE IEEE.std_logic_signed.ALL;
+
 
 ENTITY ControlM IS
 	PORT (
@@ -30,7 +30,7 @@ ENTITY ControlM IS
 END ControlM;
 
 ARCHITECTURE behavioral OF ControlM IS
-
+---------------Declaracion maquina de estados------------------
 	-- BINARY ENCODED state machine: Sreg0
 	ATTRIBUTE ENUM_ENCODING : STRING;
 	TYPE Sreg0_type IS (
@@ -41,12 +41,13 @@ ARCHITECTURE behavioral OF ControlM IS
 	"01 " & -- S2
 	"10 " & -- S3
 	"11"; -- S4
-
 	SIGNAL Sreg0, NextState_Sreg0 : Sreg0_type;
-	SIGNAL EstadosMotores : STD_LOGIC_VECTOR(2 DOWNTO 0);
-	SIGNAL PWM_Count : INTEGER RANGE 0 TO 30_000_000 := 0;
-	SIGNAL Ebeep : STD_LOGIC := '0';
-	CONSTANT LIMITE : INTEGER := 16_650_000;
+--------------------------------------------------------------------------------
+--Señales uso general 
+	SIGNAL EstadosMotores : STD_LOGIC_VECTOR(2 DOWNTO 0); --Almacena estado de los motores
+	SIGNAL PWM_Count : INTEGER RANGE 0 TO 30_000_000 := 0; --Conteo para el beep
+	SIGNAL Ebeep : STD_LOGIC := '0'; --Señal auxiliar para habilitar/deshabilitar el beep
+	CONSTANT LIMITE : INTEGER := 16_650_000; --Limite para el contador que obtiene una salida de 1/3s
 BEGIN
 
 	--------------------------------------------------------------------------------
@@ -88,9 +89,9 @@ BEGIN
 					M3 <= "01";
 					EstadosMotores <= "100";
 					IF PB2 = '1' THEN -- presiona el boton correspondiente al motor 2
-						NextState_Sreg0 <= S3;
+						NextState_Sreg0 <= S3;  --Encender motor 2
 					ELSIF PB3 = '1' THEN -- presiona el boton correspondiente al motor 3
-						NextState_Sreg0 <= S4;
+						NextState_Sreg0 <= S4;  --Encender motor 3
 					END IF;
 
 				WHEN S3 => --enciende el motor 2
@@ -98,10 +99,10 @@ BEGIN
 					M2 <= "10";
 					M3 <= "01";
 					EstadosMotores <= "010";
-					IF PB1 = '1' THEN
-						NextState_Sreg0 <= S2;
-					ELSIF PB3 = '1' THEN
-						NextState_Sreg0 <= S4;
+					IF PB1 = '1' THEN -- presiona el boton correspondiente al motor 1
+						NextState_Sreg0 <= S2;  --Encender motor 1
+					ELSIF PB3 = '1' THEN -- presiona el boton correspondiente al motor 3
+						NextState_Sreg0 <= S4;  --Encender motor 3
 					END IF;
 
 				WHEN S4 => --enciende el motor 3
@@ -109,10 +110,10 @@ BEGIN
 					M2 <= "01";
 					M3 <= "10";
 					EstadosMotores <= "001";
-					IF PB2 = '1' THEN
-						NextState_Sreg0 <= S3;
-					ELSIF PB1 = '1' THEN
-						NextState_Sreg0 <= S2;
+					IF PB2 = '1' THEN -- presiona el boton correspondiente al motor 2
+						NextState_Sreg0 <= S3;  --Encender motor 2
+					ELSIF PB1 = '1' THEN -- presiona el boton correspondiente al motor 1
+						NextState_Sreg0 <= S2;  --Encender motor 1
 					END IF;
 
 				WHEN OTHERS =>
@@ -120,39 +121,38 @@ BEGIN
 
 			END CASE;
 		END IF;
-		IF Rest = '1' THEN
-			Sreg0 <= S1;
+		IF Rest = '1' THEN --Se presiona reset
+			Sreg0 <= S1; --Envia al estado inicial/reset donde todos los motores estan apagados
 		ELSE
-			Sreg0 <= NextState_Sreg0;
+			Sreg0 <= NextState_Sreg0; --Continua con el siguiente estado
 		END IF;
 	END PROCESS;
 
 	Sonido : PROCESS (CLOCK)
 	BEGIN
-		IF rising_edge(Rest) THEN
-			Ebeep <= '1';
+		IF rising_edge(Rest) THEN --Se presiona el boton de reset
+			Ebeep <= '1'; --Se habilita el beep 
 		END IF;
 
-		IF Ebeep = '1' THEN
-			IF rising_edge(clock) THEN
+		IF Ebeep = '1' THEN --Beep habilitado
+			IF rising_edge(clock) THEN --Inicia conteo 
 				PWM_Count <= PWM_Count + 1;
 			END IF;
 
-			IF PWM_Count <= LIMITE THEN -- 1/3s 20ns(16_650_00)=333ms
-				BEEP <= '1';
+			IF PWM_Count <= LIMITE THEN -- 1/3s 20ns(16_650_000)=333ms
+				BEEP <= '1'; --Se mantiene encendido mientras el contador se encuentre por debajo de 16_650_000
 			ELSE
 				BEEP <= '0';
 			END IF;
 
-			IF PWM_Count = LIMITE + 1 THEN
+			IF PWM_Count = LIMITE + 1 THEN --Si el contador esta uno por arriba del limite se deshabilita el beep 
 				Ebeep <= '0';
 			END IF;
 		ELSE
-			PWM_Count <= 0;
-			--BEEP <= '0';
+			PWM_Count <= 0; --Reinicia contador
 		END IF;
 	END PROCESS Sonido;
-	Rels <= EstadosMotores; --Salida a relevadores que controlan el encendido y apagado de los motores
+	Rels <= NOT(EstadosMotores); --Salida a relevadores que controlan el encendido y apagado de los motores
 	EstadosM <= EstadosMotores; --Salida a una señal que se utiliza para el control de la LCD, indica el estado de los motores
 
 END behavioral;

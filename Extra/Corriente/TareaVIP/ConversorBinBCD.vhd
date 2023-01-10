@@ -41,8 +41,8 @@ BEGIN
                 WHEN "001" => AN <= "10111111"; D <= MIL; -- DECENAS
                 WHEN "010" => AN <= "11011111"; D <= Cen; -- CENTENAS
                 WHEN "011" => AN <= "11101111"; D <= Dec; -- UNIDAD DE MILLAR
-                WHEN "100" => AN <= "11110111"; D <= UNI; -- DECENAS DE MILLAR
-                WHEN OTHERS => AN <= "11110111"; D <= 0; -- DECENAS DE MILLAR
+                WHEN "100" => AN <= "11111111"; D <= UNI; -- DECENAS DE MILLAR
+                WHEN OTHERS => AN <= "11111111"; D <= 0; -- DECENAS DE MILLAR
             END CASE;
         END IF;
     END PROCESS; -- fin del proceso Multiplexor
@@ -53,6 +53,8 @@ BEGIN
     BEGIN
 
         IF SEL = "010" THEN
+		  
+		  
             CASE(D) IS -- abcdefgP
                 WHEN 0 => DISPLAY <= "00000010"; --0 
                 WHEN 1 => DISPLAY <= "10011110"; --1
@@ -88,12 +90,12 @@ BEGIN
     -----------------------Calculo corriente----------
     PROCESS (SAL_250us1)
     BEGIN
-        IF rising_edge(SAL_250us1) THEN
+        IF rising_edge(SAL_250us) THEN
             --Convierte los 15 bits a decimal,el primer bit es el signo, por lo tanto no se toma en cuenta  
             NumeroBitsDecimal <= CONV_INTEGER((binary_in(14 DOWNTO 0)));
 
             --Calcula la corriente con base en las especificaciones del acs712
-            Iin <= 178385 * (NumeroBitsDecimal - 13499)/100_000;
+            Iin <= (53946*(NumeroBitsDecimal-13465))/100_000;
 
             IF HLD = '0' THEN --No se presiona HOLD
                 Idisp <= Iin; --Asigna valores calculados
@@ -106,17 +108,6 @@ BEGIN
             Cen <= (Idisp - DecMil * 10_000 - MIL * 1000)/100; --Decimas 
             Dec <= (Idisp - DecMil * 10_000 - MIL * 1000 - Cen * 100)/10; --Centesimas
             Uni <= (Idisp - DecMil * 10_000 - MIL * 1000 - Cen * 100 - Dec * 10); --Milesimas
-
-            --FUNCIONA REGULAR CORRIENTE 
-            --  Iin <=((NumeroBitsDecimal-13493)*10_000)/5333;
-            --  Iin <=(1875*(NumeroBitsDecimal-13498))/1000;
-            --  
-            --  decmil --(NumeroBitsDecimal*1875*633)/1255000000; --decimas de millar
-            --  DecMIL<=Iin/1000;--(NumeroBitsDecimal*1875*633)/1255000000; --decimas de millar
-            --  MIL <=(Iin-DecMil*1_000)/100; --millar0
-            --  Cen <=(Iin-DecMil*1_000-MIL*100)/10;  ---centenas
-            --  Dec <=(Iin-DecMil*1_000-MIL*100-Cen*10); --decenas
-            --  Uni <=0 ;    --unidades
         END IF;
     END PROCESS;
 END behaviour;

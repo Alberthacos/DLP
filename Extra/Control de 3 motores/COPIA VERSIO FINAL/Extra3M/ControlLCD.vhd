@@ -1,11 +1,6 @@
 --Codigo para controlar la LCD en el ejercicio del control de 3 motores 
 --Este codigo se encarga de enviar los valores correspondientes a la LCD 
 --para mostrar texto y el estado de cada uno de los motores
---EXTRA
---Codigo Para controlar tres motores y muestra su estado en una LCD 
---Solo se enciende un motor a la vez
---Se apagan solo con un boton de reset
---Hay 3 opciones, se enciende M1 o M2 o M3, pero todos se apagan con reset
 LIBRARY ieee;
 USE ieee.std_logic_1164.ALL;
 USE ieee.std_logic_arith.ALL;
@@ -32,17 +27,14 @@ ARCHITECTURE Behavioral OF LCD IS
         Espacio, CambioFila, dos, tres, espacio2, DosPuntos
     );
     SIGNAL State, Next_State : STATE_TYPE;
-
+--Valores necesarios para el conteo y tiempos necesarios para enviar datos o comandos, asi como la configuracion inicial
     SIGNAL CONT1 : STD_LOGIC_VECTOR(23 DOWNTO 0) := X"000000"; -- 16,777,216 = 0.335s MAX
     SIGNAL CONT2 : STD_LOGIC_VECTOR(4 DOWNTO 0) := "00000"; -- 32 = 0.64us
     SIGNAL RESET : STD_LOGIC := '0';
     SIGNAL READY : STD_LOGIC := '0';
     --contadores para reutilizar letras (M)
     SIGNAL Ms : INTEGER RANGE 0 TO 20 := 0;
-    --SIGNAL EstadosM : STD_LOGIC_VECTOR(2 DOWNTO 0) := "000"; --Recibe el estado de los motores, indica cual esta ON u OFF
     --------------------------------
-    SIGNAL listo : STD_LOGIC := '0';
-
 BEGIN
     -----------------LCD-----------------------
     -------------------------------------------
@@ -88,13 +80,10 @@ BEGIN
                     IF CONT1 = X"000000"THEN --0s
                         LCD_RS <= '0';
                         LCD_E <= '0';
-
                         Next_State <= clear;
-                        listo <= '0';
                         Ms <= 0;
                     ELSE
                         Next_State <= clear;
-                        listo <= '0';
                         Ms <= 0;
                     END IF;
 
@@ -335,7 +324,7 @@ BEGIN
                     ELSIF CONT2 = "1111" THEN
                         READY <= '0';
                         LCD_E <= '0';
-                        Next_State <= FF;
+                        Next_State <= FF; --Ultima F de OFF
                     ELSE
                         Next_State <= F;
                     END IF;
@@ -479,7 +468,7 @@ BEGIN
                 WHEN tres => --NUMERO 3
                     IF CONT1 = X"0009C4" THEN --espera por 50us 20ns*2500=50us 2500=9C4
                         READY <= '1';
-                        DATA <= "00110010"; -- numero tres
+                        DATA <= "00110011"; -- numero tres
                         Next_State <= tres;
                     ELSIF CONT2 > "00001" AND CONT2 < "01110" THEN --rango de 12*20ns=240ns
                         LCD_E <= '1';

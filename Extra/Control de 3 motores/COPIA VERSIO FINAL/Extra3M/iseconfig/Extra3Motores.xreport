@@ -1,11 +1,11 @@
 <?xml version='1.0' encoding='UTF-8'?>
 <report-views version="2.0" >
  <header>
-  <DateModified>2022-12-25T16:37:04</DateModified>
+  <DateModified>2023-01-05T02:58:43</DateModified>
   <ModuleName>Extra3Motores</ModuleName>
   <SummaryTimeStamp>Unknown</SummaryTimeStamp>
-  <SavedFilePath>C:/Users/amf01/Documents/DLP/Extra/Control de 3 motores/Extra3M/iseconfig/Extra3Motores.xreport</SavedFilePath>
-  <ImplementationReportsDirectory>C:/Users/amf01/Documents/DLP/Extra/Control de 3 motores/Extra3M</ImplementationReportsDirectory>
+  <SavedFilePath>C:/Users/amf01/Documents/DLP/Extra/Control de 3 motores/COPIA VERSIO FINAL/Extra3M/iseconfig/Extra3Motores.xreport</SavedFilePath>
+  <ImplementationReportsDirectory>C:/Users/amf01/Documents/DLP/Extra/Control de 3 motores/COPIA VERSIO FINAL/Extra3M\</ImplementationReportsDirectory>
   <DateInitialized>2022-12-25T16:37:02</DateInitialized>
   <EnableMessageFiltering>false</EnableMessageFiltering>
  </header>
